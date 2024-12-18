@@ -54,8 +54,8 @@ const items = ref<MenuProps['items']>([
   },
   {
     key: 'others',
-    label: h('a', { href: 'https://www.codefather.cn', target: '_blank' }, '编程导航'),
-    title: '编程导航',
+    label: h('a', { href: 'https://github.com/lanxin1216', target: '_blank' }, '博客'),
+    title: '博客',
   },
 ])
 
