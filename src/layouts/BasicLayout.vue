@@ -8,7 +8,7 @@
         <router-view />
       </a-layout-content>
       <a-layout-footer class="footer">
-        <a href="https://github.com/lanxin1216" target="_blank"> Alan云图库 by 程序员Alan </a>
+        <a href="https://github.com/lanxin1216" target="_blank"> Alan云图库 by @Alan </a>
       </a-layout-footer>
     </a-layout>
   </div>
