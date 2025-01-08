@@ -52,6 +52,7 @@ import { type MenuProps, message } from 'ant-design-vue'
 import { useRouter } from 'vue-router'
 import { useLoginUserStore } from '@/stores/useLoginUserStore.ts'
 import { userLogoutUsingPost } from '@/api/userController.ts'
+import checkAccess from '@/access/checkAccess.ts'
 
 const loginUserStore = useLoginUserStore()
 
@@ -82,15 +83,35 @@ const originItems = [
 
 // 过滤菜单项
 const filterMenus = (menus = [] as MenuProps['items']) => {
-  return menus?.filter((menu) => {
-    if (menu.key.startsWith('/admin')) {
-      const loginUser = loginUserStore.loginUser
-      if (!loginUser || loginUser.userRole !== 'admin') {
-        return false
-      }
+  return menus.filter((menu) => {
+    // 保证博客存在,如果是博客菜单项，直接返回，跳过权限检查
+    if (menu.key === 'others') {
+      return true;
     }
-    return true
+
+    // 转换菜单项为路由项，获取 meta 信息
+    const item = menuToRouteItem(menu);
+
+    // 如果没有找到对应的路由项，或者菜单项的 meta 配置为隐藏，则过滤掉
+    if (!item || item.meta?.hideInMenu) {
+      return false;
+    }
+
+    // 根据权限过滤菜单，有权限则返回 true，则保留该菜单
+    return checkAccess(loginUserStore.loginUser, item.meta?.access as string)
   })
+}
+
+// 菜单项转换为路由项
+const menuToRouteItem = (menu: any) => {
+  const route = router.getRoutes().find(route => route.path === menu.key);
+  if (route) {
+    return {
+      ...menu,
+      meta: route.meta,  // 从路由配置中提取 meta 信息
+    };
+  }
+  return null;
 }
 
 // 展示在菜单的路由数组

@@ -4,7 +4,13 @@
       <h2 class="title">Alan&云图库 - 用户登录</h2>
       <div class="desc">“代码跑起来我们再聊。”</div>
       <a-form :model="formState" name="basic" autocomplete="off" @finish="handleSubmit">
-        <a-form-item name="userAccount" :rules="[{ required: true, message: '请输入账号' }]">
+        <a-form-item
+          name="userAccount"
+          :rules="[
+            { required: true, message: '请输入账号' },
+            { min: 4, message: '账号不能小于 4 位' },
+          ]"
+        >
           <a-input v-model:value="formState.userAccount" placeholder="请输入账号" />
         </a-form-item>
         <a-form-item
