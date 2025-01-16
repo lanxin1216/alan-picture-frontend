@@ -87,13 +87,21 @@ const handleSubmit = async (values: any) => {
     ...values,
   })
   if (res.data.code === 0 && res.data.data) {
-    message.success('创建成功')
+    if (route.query?.id) {
+      message.success('修改成功')
+    } else {
+      message.success('创建成功')
+    }
     // 跳转到图片详情页
     await router.push({
       path: `/picture/${pictureId}`,
     })
   } else {
-    message.error('创建失败，' + res.data.message)
+    if (route.query?.id) {
+      message.error('修改失败，' + res.data.message)
+    } else {
+      message.error('创建失败，' + res.data.message)
+    }
   }
 }
 

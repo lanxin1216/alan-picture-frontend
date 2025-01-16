@@ -62,13 +62,13 @@ export async function getPictureVoByIdUsingGet(
   })
 }
 
-/** listPictureByPage GET /api/picture/list/page */
-export async function listPictureByPageUsingGet(
+/** listPictureByPage POST /api/picture/list/page */
+export async function listPictureByPageUsingPost(
   body: API.PictureQueryRequest,
   options?: { [key: string]: any }
 ) {
   return request<API.BaseResponsePagePicture_>('/api/picture/list/page', {
-    method: 'GET',
+    method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
@@ -77,13 +77,13 @@ export async function listPictureByPageUsingGet(
   })
 }
 
-/** listPictureVOByPage GET /api/picture/list/page/vo */
-export async function listPictureVoByPageUsingGet(
+/** listPictureVOByPage POST /api/picture/list/page/vo */
+export async function listPictureVoByPageUsingPost(
   body: API.PictureQueryRequest,
   options?: { [key: string]: any }
 ) {
   return request<API.BaseResponsePagePictureVO_>('/api/picture/list/page/vo', {
-    method: 'GET',
+    method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
