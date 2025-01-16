@@ -51,16 +51,25 @@
 
           <!-- 操作 -->
           <a-space wrap>
+            <!-- 编辑 -->
             <a-button v-if="canEdit" type="default" @click="doEdit">
               编辑
               <template #icon>
                 <EditOutlined />
               </template>
             </a-button>
+            <!-- 删除 -->
             <a-button v-if="canEdit" danger @click="doDelete">
               删除
               <template #icon>
                 <DeleteOutlined />
+              </template>
+            </a-button>
+            <!-- 下载 -->
+            <a-button type="primary" @click="doDownload">
+              免费下载
+              <template #icon>
+                <DownloadOutlined />
               </template>
             </a-button>
           </a-space>
@@ -75,7 +84,7 @@ import { computed, onMounted, ref } from 'vue'
 import { deletePictureUsingPost, getPictureVoByIdUsingGet } from '@/api/pictureController.ts'
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons-vue'
 import { message } from 'ant-design-vue'
-import { formatSize } from '@/utils'
+import { downloadImage, formatSize } from '@/utils'
 import { useLoginUserStore } from '@/stores/useLoginUserStore.ts'
 import router from '@/router'
 
@@ -113,7 +122,7 @@ onMounted(() => {
 const loginUserStore = useLoginUserStore()
 // 是否具有编辑权限
 const canEdit = computed(() => {
-  const loginUser = loginUserStore.loginUser;
+  const loginUser = loginUserStore.loginUser
   // 未登录不可编辑
   if (!loginUser.id) {
     return false
@@ -144,6 +153,13 @@ const doDelete = async () => {
   } else {
     message.error('删除失败')
   }
+}
+
+/**
+ * 下载
+ */
+const doDownload = () => {
+  downloadImage(picture.value.url)
 }
 
 </script>
