@@ -93,7 +93,7 @@ const selectedTagList = ref<string[]>([])
 // 搜索条件（使用倒序，根据创建时间）
 const searchParams = reactive<API.PictureQueryRequest>({
   current: 1,
-  pageSize: 12,
+  pageSize: 15,
   sortField: 'createTime',
   sortOrder: 'descend',
 })
