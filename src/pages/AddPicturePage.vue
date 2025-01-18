@@ -6,7 +6,18 @@
     </h2>
 
     <!-- 上传框 -->
-    <PictureUpload :picture="picture" :onSuccess="onSuccess" />
+<!--    <PictureUpload :picture="picture" :onSuccess="onSuccess" />-->
+    <!-- 选择上传方式 -->
+    <a-tabs v-model:activeKey="uploadType"
+    >>
+      <a-tab-pane key="file" tab="文件上传">
+        <PictureUpload :picture="picture" :onSuccess="onSuccess" />
+      </a-tab-pane>
+      <a-tab-pane key="url" tab="URL 上传" force-render>
+        <UrlPictureUpload :picture="picture" :onSuccess="onSuccess" />
+      </a-tab-pane>
+    </a-tabs>
+
 
     <!-- 图片信息表单 -->
     <a-form v-if="picture" layout="vertical" :model="pictureForm" @finish="handleSubmit">
@@ -60,10 +71,14 @@ import {
   listPictureTagCategoryUsingGet,
 } from '@/api/pictureController.ts'
 import { message } from 'ant-design-vue'
+import UrlPictureUpload from '@/components/UrlPictureUpload.vue'
 
 // 表单信息变量
 const picture = ref<API.PictureVO>()
 const pictureForm = reactive<API.PictureEditRequest>({})
+
+// 上传选择参数
+const uploadType = ref<'file' | 'url'>('file')
 
 // 接收子组件上传之后返回的参数
 const onSuccess = (newPicture: API.PictureVO) => {
