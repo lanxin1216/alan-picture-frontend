@@ -150,11 +150,13 @@ declare namespace API {
     picScale?: number
     picSize?: number
     picWidth?: number
+    previewUrl?: string
     reviewMessage?: string
     reviewStatus?: number
     reviewTime?: string
     reviewerId?: number
     tags?: string
+    thumbnailUrl?: string
     updateTime?: string
     url?: string
     userId?: number
@@ -233,7 +235,9 @@ declare namespace API {
     picScale?: number
     picSize?: number
     picWidth?: number
+    previewUrl?: string
     tags?: string[]
+    thumbnailUrl?: string
     updateTime?: string
     url?: string
     user?: UserVO

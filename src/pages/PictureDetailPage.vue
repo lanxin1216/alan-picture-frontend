@@ -4,7 +4,7 @@
       <!-- 图片展示区 -->
       <a-col :sm="24" :md="16" :xl="18">
         <a-card title="图片预览">
-          <a-image style="max-height: 600px; object-fit: contain" :src="picture.url" />
+          <a-image style="max-height: 600px; object-fit: contain" :src="picture.previewUrl" />
         </a-card>
       </a-col>
 
@@ -67,7 +67,7 @@
             </a-button>
             <!-- 下载 -->
             <a-button type="primary" @click="doDownload">
-              免费下载
+              原图下载
               <template #icon>
                 <DownloadOutlined />
               </template>
@@ -82,7 +82,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
 import { deletePictureUsingPost, getPictureVoByIdUsingGet } from '@/api/pictureController.ts'
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons-vue'
+import { DeleteOutlined, EditOutlined, DownloadOutlined } from '@ant-design/icons-vue'
 import { message } from 'ant-design-vue'
 import { downloadImage, formatSize } from '@/utils'
 import { useLoginUserStore } from '@/stores/useLoginUserStore.ts'
@@ -161,7 +161,6 @@ const doDelete = async () => {
 const doDownload = () => {
   downloadImage(picture.value.url)
 }
-
 </script>
 
 <style scoped></style>
