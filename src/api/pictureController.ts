@@ -62,6 +62,14 @@ export async function getPictureVoByIdUsingGet(
   })
 }
 
+/** listSpaceLevel GET /api/picture/list/level */
+export async function listSpaceLevelUsingGet(options?: { [key: string]: any }) {
+  return request<API.BaseResponseListSpaceLevel_>('/api/picture/list/level', {
+    method: 'GET',
+    ...(options || {}),
+  })
+}
+
 /** listPictureByPage POST /api/picture/list/page */
 export async function listPictureByPageUsingPost(
   body: API.PictureQueryRequest,
@@ -88,6 +96,14 @@ export async function listPictureVoByPageUsingPost(
       'Content-Type': 'application/json',
     },
     data: body,
+    ...(options || {}),
+  })
+}
+
+/** updateListPictureVOCache POST /api/picture/refresh/pageVoCache */
+export async function updateListPictureVoCacheUsingPost(options?: { [key: string]: any }) {
+  return request<API.BaseResponseBoolean_>('/api/picture/refresh/pageVoCache', {
+    method: 'POST',
     ...(options || {}),
   })
 }

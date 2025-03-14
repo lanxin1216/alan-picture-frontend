@@ -5,10 +5,12 @@
 import * as testFileController from './testFileController'
 import * as mainController from './mainController'
 import * as pictureController from './pictureController'
+import * as spaceController from './spaceController'
 import * as userController from './userController'
 export default {
   testFileController,
   mainController,
   pictureController,
+  spaceController,
   userController,
 }

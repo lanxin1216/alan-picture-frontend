@@ -80,6 +80,11 @@ const originItems = [
     title: '用户管理',
   },
   {
+    key: '/admin/spaceManage',
+    label: '空间管理',
+    title: '空间管理',
+  },
+  {
     key: '/about',
     label: '关于',
     title: '关于',

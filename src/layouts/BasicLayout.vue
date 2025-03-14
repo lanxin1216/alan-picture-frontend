@@ -4,9 +4,12 @@
       <a-layout-header class="header">
         <GlobalHeader />
       </a-layout-header>
-      <a-layout-content class="content">
-        <router-view />
-      </a-layout-content>
+      <a-layout>
+        <GlobalSider class="sider" />
+        <a-layout-content class="content">
+          <router-view />
+        </a-layout-content>
+      </a-layout>
       <a-layout-footer class="footer">
         <a href="https://github.com/lanxin1216" target="_blank"> Alan云图库 by @Alan </a>
       </a-layout-footer>
@@ -16,6 +19,7 @@
 
 <script lang="ts" setup>
 import GlobalHeader from '@/components/GlobalHeader.vue'
+import GlobalSider from '@/components/GlobalSider.vue'
 </script>
 
 <style scoped>
@@ -29,11 +33,23 @@ import GlobalHeader from '@/components/GlobalHeader.vue'
   text-align: center;
 }
 
+#basicLayout .sider {
+  background: #fff;
+  padding-top: 20px;
+  margin-top: 70px;
+  border-right: 0.5px solid #eee;
+}
+
+#basicLayout :deep(.ant-menu-root) {
+  border-bottom: none !important;
+  border-inline-end: none !important;
+}
+
 #basicLayout .content {
   background: linear-gradient(to right, #fefefe, #fff);
   margin-bottom: 28px;
-  margin-top: 80px;
-  padding: 20px;
+  margin-top: 70px;
+  padding: 28px;
 }
 
 #basicLayout .header {
