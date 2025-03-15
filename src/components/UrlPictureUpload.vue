@@ -1,8 +1,14 @@
 <template>
   <div class="url-picture-upload">
     <a-input-group compact style="margin-bottom: 16px">
-      <a-input v-model:value="fileUrl" style="width: calc(100% - 120px)" placeholder="请输入图片 URL" />
-      <a-button type="primary" :loading="loading" @click="handleUpload" style="width: 120px">提交</a-button>
+      <a-input
+        v-model:value="fileUrl"
+        style="width: calc(100% - 120px)"
+        placeholder="请输入图片 URL"
+      />
+      <a-button type="primary" :loading="loading" @click="handleUpload" style="width: 120px"
+        >提交</a-button
+      >
     </a-input-group>
     <div class="img-wrapper">
       <img v-if="picture?.url" :src="picture?.url" alt="avatar" />
@@ -13,13 +19,14 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { message } from 'ant-design-vue'
-import type { UploadProps } from 'ant-design-vue'
 import { uploadPictureByUrlUsingPost } from '@/api/pictureController.ts'
 
 interface Props {
   picture?: API.PictureVO
+  spaceId?: number
   onSuccess?: (newPicture: API.PictureVO) => void
 }
+
 const props = defineProps<Props>()
 
 // 加载动画
@@ -36,6 +43,7 @@ const handleUpload = async () => {
     if (props.picture) {
       params.id = props.picture.id
     }
+    params.spaceId = props.spaceId
     const res = await uploadPictureByUrlUsingPost(params)
     if (res.data.code === 0 && res.data.data) {
       message.success('图片上传成功')
