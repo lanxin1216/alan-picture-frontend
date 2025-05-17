@@ -16,6 +16,15 @@
         <a-button type="primary" :href="`/add_picture?spaceId=${id}`" target="_blank">
           + 创建图片
         </a-button>
+        <a-button
+          type="primary"
+          ghost
+          :icon="h(BarChartOutlined)"
+          :href="`/space_analyze?spaceId=${id}`"
+          target="_blank"
+        >
+          空间分析
+        </a-button>
       </a-space>
     </a-flex>
 
@@ -36,9 +45,10 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { h, onMounted, ref } from 'vue'
 import { getSpaceVoByIdUsingGet } from '@/api/spaceController.ts'
 import { message } from 'ant-design-vue'
+import { BarChartOutlined } from '@ant-design/icons-vue'
 import { downloadImage, formatSize } from '@/utils'
 import { listPictureVoByPageUsingPost } from '@/api/pictureController.ts'
 import PictureList from '@/components/PictureList.vue'
