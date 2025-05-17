@@ -52,6 +52,9 @@ const router = createRouter({
       path: '/admin/pictureManage',
       name: '图片管理',
       component: PictureManagePage,
+      meta: {
+        access: ACCESS_ENUM.ADMIN,
+      },
     },
     {
       path: '/admin/userManage',
@@ -65,6 +68,9 @@ const router = createRouter({
       path: '/admin/spaceManage',
       name: '空间管理',
       component: SpaceManagePage,
+      meta: {
+        access: ACCESS_ENUM.ADMIN,
+      },
     },
     {
       path: '/add_space',

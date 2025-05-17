@@ -12,7 +12,7 @@
       <a-col flex="auto">
         <a-menu
           v-model:selectedKeys="current"
-          :items="items"
+          :items="originItems"
           mode="horizontal"
           @click="doMenuClick"
         />
@@ -53,13 +53,12 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, h, ref } from 'vue'
-import { HomeOutlined, LogoutOutlined, UserOutlined } from '@ant-design/icons-vue'
-import { type MenuProps, message } from 'ant-design-vue'
+import { h, ref } from 'vue'
+import { HomeOutlined, LogoutOutlined, UserOutlined, UploadOutlined } from '@ant-design/icons-vue'
+import { message } from 'ant-design-vue'
 import { useRouter } from 'vue-router'
 import { useLoginUserStore } from '@/stores/useLoginUserStore.ts'
 import { userLogoutUsingPost } from '@/api/userController.ts'
-import checkAccess from '@/access/checkAccess.ts'
 
 const loginUserStore = useLoginUserStore()
 
@@ -73,23 +72,9 @@ const originItems = [
   },
   {
     key: '/add_picture',
-    label: '创建图片',
-    title: '创建图片',
-  },
-  {
-    key: '/admin/pictureManage',
-    label: '图片管理',
-    title: '图片管理',
-  },
-  {
-    key: '/admin/userManage',
-    label: '用户管理',
-    title: '用户管理',
-  },
-  {
-    key: '/admin/spaceManage',
-    label: '空间管理',
-    title: '空间管理',
+    icon: () => h(UploadOutlined),
+    label: '上传图片',
+    title: '上传图片',
   },
   {
     key: '/about',
@@ -98,46 +83,10 @@ const originItems = [
   },
   {
     key: 'others',
-    label: h('a', { href: 'https://alanblog.alank.top', target: '_blank' }, '博客'),
+    label: h('a', { href: 'https://blog.alank.top/', target: '_blank' }, '博客'),
     title: '博客',
   },
 ]
-
-// 过滤菜单项
-const filterMenus = (menus = [] as MenuProps['items']) => {
-  return menus.filter((menu) => {
-    // 保证博客存在,如果是博客菜单项，直接返回，跳过权限检查
-    if (menu.key === 'others') {
-      return true
-    }
-
-    // 转换菜单项为路由项，获取 meta 信息
-    const item = menuToRouteItem(menu)
-
-    // 如果没有找到对应的路由项，或者菜单项的 meta 配置为隐藏，则过滤掉
-    if (!item || item.meta?.hideInMenu) {
-      return false
-    }
-
-    // 根据权限过滤菜单，有权限则返回 true，则保留该菜单
-    return checkAccess(loginUserStore.loginUser, item.meta?.access as string)
-  })
-}
-
-// 菜单项转换为路由项
-const menuToRouteItem = (menu: any) => {
-  const route = router.getRoutes().find((route) => route.path === menu.key)
-  if (route) {
-    return {
-      ...menu,
-      meta: route.meta, // 从路由配置中提取 meta 信息
-    }
-  }
-  return null
-}
-
-// 展示在菜单的路由数组
-const items = computed<MenuProps['items']>(() => filterMenus(originItems))
 
 const router = useRouter()
 // 当前选中菜单
