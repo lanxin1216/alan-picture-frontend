@@ -72,22 +72,32 @@
                 <DownloadOutlined />
               </template>
             </a-button>
+            <!-- 分享 -->
+            <a-button type="primary" ghost @click="doShare">
+              分享
+              <template #icon>
+                <share-alt-outlined />
+              </template>
+            </a-button>
           </a-space>
         </a-card>
       </a-col>
     </a-row>
   </div>
+
+  <ShareModal ref="shareModalRef" :link="shareLink" />
 </template>
 
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
 import { deletePictureUsingPost, getPictureVoByIdUsingGet } from '@/api/pictureController.ts'
-import { DeleteOutlined, EditOutlined, DownloadOutlined } from '@ant-design/icons-vue'
+import { DeleteOutlined, EditOutlined, DownloadOutlined, ShareAltOutlined} from '@ant-design/icons-vue'
 import { message } from 'ant-design-vue'
 import { downloadImage, formatSize } from '@/utils'
 import { useLoginUserStore } from '@/stores/useLoginUserStore.ts'
 import router from '@/router'
 import { SPACE_PERMISSION_ENUM } from '@/constants/space.ts'
+import ShareModal from '@/components/ShareModal.vue'
 
 const props = defineProps<{
   id: string | number
@@ -178,6 +188,21 @@ const doDelete = async () => {
  */
 const doDownload = () => {
   downloadImage(picture.value.url)
+}
+
+// ---------- 分享 ----------
+// 分享弹窗引用
+const shareModalRef = ref()
+// 分享链接
+const shareLink = ref<string>()
+
+// 分享
+const doShare = (picture: API.PictureVO, e: Event) => {
+  e.stopPropagation()
+  shareLink.value = `${window.location.protocol}//${window.location.host}/picture/${picture.id}`
+  if (shareModalRef.value) {
+    shareModalRef.value.openModal()
+  }
 }
 </script>
 
