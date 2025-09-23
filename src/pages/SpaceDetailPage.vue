@@ -21,6 +21,7 @@
         >
           + 创建图片
         </a-button>
+        <a-button :icon="h(EditOutlined)" @click="doBatchEdit"> 批量编辑</a-button>
         <a-button
           v-if="canManageSpaceUser && SPACE_TYPE_ENUM.TEAM == space.spaceType"
           type="primary"
@@ -65,18 +66,26 @@
       @change="onPageChange"
     />
   </div>
+
+  <BatchEditPictureModal
+    ref="batchEditPictureModalRef"
+    :spaceId="id"
+    :pictureList="dataList"
+    :onSuccess="onBatchEditPictureSuccess"
+  />
 </template>
 
 <script setup lang="ts">
 import { computed, h, onMounted, ref, watch } from 'vue'
 import { getSpaceVoByIdUsingGet } from '@/api/spaceController.ts'
 import { message } from 'ant-design-vue'
-import { BarChartOutlined, TeamOutlined } from '@ant-design/icons-vue'
+import { BarChartOutlined, EditOutlined, TeamOutlined } from '@ant-design/icons-vue'
 import { downloadImage, formatSize } from '@/utils'
 import { listPictureVoByPageUsingPost } from '@/api/pictureController.ts'
 import PictureList from '@/components/PictureList.vue'
 import PictureSearchForm from '@/components/PictureSearchForm.vue'
 import { SPACE_PERMISSION_ENUM, SPACE_TYPE_ENUM, SPACE_TYPE_MAP } from '../constants/space.ts'
+import BatchEditPictureModal from '@/components/BatchEditPictureModal.vue'
 
 const props = defineProps<{
   id: string | number
@@ -162,6 +171,20 @@ const fetchData = async () => {
     message.error('获取数据失败，' + res.data.message)
   }
   loading.value = false
+}
+
+// 批量编辑弹窗引用
+const batchEditPictureModalRef = ref()
+
+// 批量编辑成功后，刷新数据
+const onBatchEditPictureSuccess = () => {
+  fetchData()
+}
+// 打开批量编辑弹窗
+const doBatchEdit = () => {
+  if (batchEditPictureModalRef.value) {
+    batchEditPictureModalRef.value.openModal()
+  }
 }
 
 // 页面加载时请求一次
