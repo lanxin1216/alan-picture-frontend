@@ -4,8 +4,8 @@
       <a-col flex="200px">
         <RouterLink to="/">
           <div class="title-bar">
-            <img alt="logo" class="logo" src="../assets/logo.webp" />
-            <div class="title">Alan云图库</div>
+            <img alt="logo" class="logo" src="../assets/logo.png" />
+            <div class="title">屿图</div>
           </div>
         </RouterLink>
       </a-col>
@@ -127,8 +127,9 @@ const doLogout = async () => {
 
 .title {
   color: black;
-  font-size: 18px;
+  font-size: 24px;
   margin-left: 16px;
+  font-weight: bold;
 }
 
 .logo {

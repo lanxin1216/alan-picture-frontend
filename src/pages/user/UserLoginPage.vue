@@ -1,8 +1,8 @@
 <template>
   <div id="userLoginPage">
     <div class="login-container">
-      <h2 class="title">Alan&云图库 - 用户登录</h2>
-      <div class="desc">“代码跑起来我们再聊。”</div>
+      <h2 class="title">屿图 - 用户登录</h2>
+      <div class="desc">—— 发现与分享你的光影岛屿 ——</div>
       <a-form :model="formState" name="basic" autocomplete="off" @finish="handleSubmit">
         <a-form-item
           name="userAccount"

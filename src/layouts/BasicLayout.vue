@@ -11,7 +11,7 @@
         </a-layout-content>
       </a-layout>
       <a-layout-footer class="footer">
-        <a href="https://github.com/lanxin1216" target="_blank"> Alan云图库 by @Alan </a>
+        <a href="https://github.com/lanxin1216" target="_blank"> 屿图 by @Alan </a>
       </a-layout-footer>
     </a-layout>
   </div>
