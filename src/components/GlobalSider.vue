@@ -13,7 +13,7 @@
 
 <script lang="ts" setup>
 import { computed, h, ref, watchEffect } from 'vue'
-import { PictureOutlined, UserOutlined, TeamOutlined, CloudOutlined } from '@ant-design/icons-vue'
+import { PictureOutlined, UserOutlined, TeamOutlined, CloudOutlined, SettingOutlined } from '@ant-design/icons-vue'
 import { useRouter } from 'vue-router'
 import { useLoginUserStore } from '@/stores/useLoginUserStore.ts'
 import checkAccess from '@/access/checkAccess.ts'
@@ -64,33 +64,48 @@ const adminMenus = [
 // 菜单列表
 const teamSpaceList = ref<API.SpaceUserVO[]>([])
 const menuItems = computed(() => {
-  // 没有团队空间，只展示固定菜单
-  if (teamSpaceList.value.length < 1) {
-    return fixedMenuItems
-  }
-  // 展示团队空间分组
-  const teamSpaceSubMenus = teamSpaceList.value.map((spaceUser) => {
-    const space = spaceUser.space
-    return {
-      key: '/space/' + spaceUser.spaceId,
-      label: space?.spaceName,
+  const menuList = [...fixedMenuItems]
+
+  // 添加团队空间分组
+  if (teamSpaceList.value.length > 0) {
+    const teamSpaceSubMenus = teamSpaceList.value.map((spaceUser) => {
+      const space = spaceUser.space
+      return {
+        key: '/space/' + spaceUser.spaceId,
+        label: space?.spaceName,
+      }
+    })
+
+    const teamSpaceMenuGroup = {
+      type: 'group',
+      label: '我的团队',
+      key: 'teamSpace',
+      children: teamSpaceSubMenus,
     }
-  })
-  const teamSpaceMenuGroup = {
-    type: 'group',
-    label: '我的团队',
-    key: 'teamSpace',
-    children: teamSpaceSubMenus,
+    menuList.push(teamSpaceMenuGroup)
   }
 
-  // 转换菜单项为路由项并校验权限
+  // 添加系统管理分组（需要权限校验）
   const filteredAdminMenus = adminMenus.filter((menu) => {
     const routeItem = menuToRouteItem(menu)
     if (!routeItem || routeItem.meta?.hideInMenu) return false
     return checkAccess(loginUserStore.loginUser, routeItem.meta?.access as string)
   })
 
-  return [...fixedMenuItems, teamSpaceMenuGroup, ...filteredAdminMenus]
+  if (filteredAdminMenus.length > 0) {
+    const adminMenuGroup = {
+      type: 'group',
+      label: '系统管理',
+      key: 'systemManagement',
+      children: filteredAdminMenus.map(menu => ({
+        ...menu,
+        icon: menu.icon || (() => h(SettingOutlined)) // 默认使用设置图标
+      }))
+    }
+    menuList.push(adminMenuGroup)
+  }
+
+  return menuList
 })
 
 const menuToRouteItem = (menu: any) => {
