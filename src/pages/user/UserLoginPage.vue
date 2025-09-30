@@ -5,13 +5,12 @@
       <div class="desc">—— 发现与分享你的光影岛屿 ——</div>
       <a-form :model="formState" name="basic" autocomplete="off" @finish="handleSubmit">
         <a-form-item
-          name="userAccount"
+          name="email"
           :rules="[
-            { required: true, message: '请输入账号' },
-            { min: 4, message: '账号不能小于 4 位' },
+            { required: true, message: '请输入登录邮箱' },
           ]"
         >
-          <a-input v-model:value="formState.userAccount" placeholder="请输入账号" />
+          <a-input v-model:value="formState.email" placeholder="请输入登录邮箱" />
         </a-form-item>
         <a-form-item
           name="userPassword"
@@ -42,7 +41,7 @@ import { message } from 'ant-design-vue'
 import { userLoginUsingPost } from '@/api/userController.ts'
 
 const formState = reactive<API.UserLoginRequest>({
-  userAccount: '',
+  email: '',
   userPassword: '',
 })
 

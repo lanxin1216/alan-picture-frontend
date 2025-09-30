@@ -189,6 +189,10 @@ declare namespace API {
     id?: number
   }
 
+  type EmailVerificationRequest = {
+    email?: string
+  }
+
   type GetOutPaintingTaskResponse = {
     output?: Output1
     requestId?: string
@@ -237,6 +241,7 @@ declare namespace API {
   type LoginUserVO = {
     createTime?: string
     editTime?: string
+    email?: string
     id?: number
     updateTime?: string
     userAccount?: string
@@ -640,6 +645,7 @@ declare namespace API {
   type User = {
     createTime?: string
     editTime?: string
+    email?: string
     id?: number
     isDelete?: number
     updateTime?: string
@@ -652,6 +658,7 @@ declare namespace API {
   }
 
   type UserAddRequest = {
+    email?: string
     userAccount?: string
     userAvatar?: string
     userName?: string
@@ -660,7 +667,7 @@ declare namespace API {
   }
 
   type UserLoginRequest = {
-    userAccount?: string
+    email?: string
     userPassword?: string
   }
 
@@ -678,8 +685,18 @@ declare namespace API {
 
   type UserRegisterRequest = {
     checkPassword?: string
+    email?: string
     userAccount?: string
     userPassword?: string
+    verificationCode?: string
+  }
+
+  type UserUpdatePasswordRequest = {
+    checkNewPassword?: string
+    email?: string
+    newPassword?: string
+    oldPassword?: string
+    verificationCode?: string
   }
 
   type UserUpdateRequest = {
@@ -692,6 +709,7 @@ declare namespace API {
 
   type UserVO = {
     createTime?: string
+    email?: string
     id?: number
     userAccount?: string
     userAvatar?: string

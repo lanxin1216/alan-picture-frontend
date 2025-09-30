@@ -120,12 +120,42 @@ export async function userRegisterUsingPost(
   })
 }
 
+/** userRegisterEmailVerification POST /api/user/register/verification */
+export async function userRegisterEmailVerificationUsingPost(
+  body: API.EmailVerificationRequest,
+  options?: { [key: string]: any }
+) {
+  return request<API.BaseResponseBoolean_>('/api/user/register/verification', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  })
+}
+
 /** updateUser POST /api/user/update */
 export async function updateUserUsingPost(
   body: API.UserUpdateRequest,
   options?: { [key: string]: any }
 ) {
   return request<API.BaseResponseBoolean_>('/api/user/update', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  })
+}
+
+/** userUpdatePassword POST /api/user/update/password */
+export async function userUpdatePasswordUsingPost(
+  body: API.UserUpdatePasswordRequest,
+  options?: { [key: string]: any }
+) {
+  return request<API.BaseResponseBoolean_>('/api/user/update/password', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
