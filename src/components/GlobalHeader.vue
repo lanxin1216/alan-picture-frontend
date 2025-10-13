@@ -1,53 +1,61 @@
 <template>
-  <div id="globalHeader" class="h-full flex items-center justify-between px-6">
+  <div id="globalHeader" class="h-full flex items-center justify-between px-6 glass-header">
     <!-- Logo区域 -->
-    <RouterLink to="/" class="flex items-center space-x-3 hover:opacity-80 transition-opacity">
-      <img alt="logo" class="logo w-10 h-10 rounded-lg" src="../assets/logo.png" />
-      <div class="title text-2xl font-bold bg-gradient-to-r from-primary-blue to-dark-blue bg-clip-text text-transparent">
-        屿图
-      </div>
-    </RouterLink>
+    <div class="flex items-center space-x-4">
+      <RouterLink to="/" class="flex items-center space-x-3 hover:opacity-80 transition-opacity">
+        <img alt="logo" class="logo w-10 h-10 rounded-xl" src="../assets/logo.png" />
+        <div
+          class="title text-2xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent"
+        >
+          屿图
+        </div>
+      </RouterLink>
 
-    <!-- 导航菜单 -->
-    <div class="flex-1 flex justify-center">
-      <a-menu
-        v-model:selectedKeys="current"
-        :items="originItems"
-        mode="horizontal"
-        class="bg-transparent border-none"
-        @click="doMenuClick"
-      />
+      <!-- 导航菜单 - 移动到左侧 -->
+      <div class="flex ml-6">
+        <a-menu
+          v-model:selectedKeys="current"
+          :items="originItems"
+          mode="horizontal"
+          class="glass-menu"
+          @click="doMenuClick"
+        />
+      </div>
     </div>
 
     <!-- 用户登录状态 -->
     <div class="user-login-status">
       <div v-if="loginUserStore.loginUser.id" class="flex items-center space-x-3">
-        <a-dropdown :overlay-style="{ borderRadius: '12px' }">
-          <a-button type="text" class="flex items-center space-x-2 !px-3 !py-2 glass-container">
-            <a-avatar 
-              :src="loginUserStore.loginUser.userAvatar" 
+        <a-dropdown :overlay-style="{ borderRadius: '16px', padding: '8px' }">
+          <a-button type="text" class="flex items-center space-x-2 !px-4 !py-2 glass-user-btn">
+            <a-avatar
+              :src="loginUserStore.loginUser.userAvatar"
               size="small"
-              class="border-2 border-glass-border"
+              class="border-2 border-gray-200 shadow-lg"
             />
-            <span class="text-text-primary font-medium">
+            <span class="text-gray-700 font-medium">
               {{ loginUserStore.loginUser.userName ?? '无名' }}
             </span>
+            <div class="i-chevron-down w-3 h-3 text-gray-500"></div>
           </a-button>
           <template #overlay>
-            <a-menu class="glass-container border border-glass-border">
-              <a-menu-item class="!rounded-lg !mx-2 !my-1">
-                <router-link to="/my_space" class="flex items-center space-x-2 text-text-primary hover:text-primary-blue">
-                  <UserOutlined />
-                  <span>我的空间</span>
+            <a-menu class="glass-dropdown">
+              <a-menu-item class="glass-menu-item">
+                <router-link
+                  to="/my_space"
+                  class="flex items-center space-x-3 text-gray-700 hover:text-primary-blue transition-colors"
+                >
+                  <UserOutlined class="text-lg" />
+                  <span class="font-medium">我的空间</span>
                 </router-link>
               </a-menu-item>
-              <a-menu-divider class="!my-1" />
-              <a-menu-item 
-                @click="doLogout" 
-                class="!rounded-lg !mx-2 !my-1 text-red-500 hover:!bg-red-50"
+              <a-menu-divider class="!my-2 !mx-2 border-gray-200" />
+              <a-menu-item
+                @click="doLogout"
+                class="glass-menu-item text-red-500 hover:!bg-red-50/80"
               >
-                <LogoutOutlined />
-                <span>退出登录</span>
+                <LogoutOutlined class="text-lg" />
+                <span class="font-medium">退出登录</span>
               </a-menu-item>
             </a-menu>
           </template>
@@ -55,10 +63,10 @@
       </div>
 
       <div v-else>
-        <a-button 
-          type="primary" 
+        <a-button
+          type="primary"
           href="/user/login"
-          class="!rounded-lg !px-6 !h-10 glass-container border border-glass-border bg-gradient-to-r from-primary-blue to-dark-blue hover:from-primary-blue-hover hover:to-primary-blue"
+          class="!rounded-xl !px-6 !h-10 glass-login-btn text-white font-medium shadow-lg hover:shadow-xl transition-all"
         >
           登录
         </a-button>
@@ -136,7 +144,7 @@ const doLogout = async () => {
 
 <style scoped>
 #globalHeader {
-  height: 64px;
+  height: 72px;
 }
 
 .title {
@@ -146,65 +154,170 @@ const doLogout = async () => {
 
 .logo {
   height: 40px;
-  border-radius: 8px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-/* 自定义菜单样式 */
-:deep(.ant-menu-horizontal) {
-  border-bottom: none !important;
-  background: transparent !important;
+/* 玻璃风格类 */
+.glass-header {
+  backdrop-filter: blur(16px) saturate(180%);
+  background: rgba(255, 255, 255, 0.75);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
 
-:deep(.ant-menu-item) {
-  border-radius: 8px;
-  margin: 0 8px !important;
-  padding: 8px 16px !important;
+.glass-user-btn {
+  backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.6) !important;
+  border: 1px solid rgba(255, 255, 255, 0.8) !important;
+  border-radius: 12px !important;
   transition: all 0.3s ease;
 }
 
-:deep(.ant-menu-item-selected) {
-  background: linear-gradient(135deg, var(--primary-blue) 0%, var(--dark-blue) 100%) !important;
-  color: white !important;
-  box-shadow: 0 4px 12px rgba(24, 144, 255, 0.3);
+.glass-user-btn:hover {
+  background: rgba(255, 255, 255, 0.9) !important;
+  border-color: rgba(59, 130, 246, 0.3) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-:deep(.ant-menu-item:hover) {
-  background: rgba(24, 144, 255, 0.1) !important;
-  color: var(--primary-blue) !important;
+.glass-login-btn {
+  backdrop-filter: blur(12px);
+  background: linear-gradient(135deg,
+  rgba(59, 130, 246, 0.9) 0%,
+  rgba(147, 51, 234, 0.9) 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.5) !important;
+  transition: all 0.3s ease;
+}
+
+.glass-login-btn:hover {
+  background: linear-gradient(135deg,
+  rgba(59, 130, 246, 1) 0%,
+  rgba(147, 51, 234, 1) 100%) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4) !important;
+}
+
+.glass-dropdown {
+  backdrop-filter: blur(20px);
+  background: rgba(255, 255, 255, 0.95) !important;
+  border: 1px solid rgba(255, 255, 255, 0.8) !important;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.2) !important;
+}
+
+.glass-menu-item {
+  border-radius: 10px !important;
+  margin: 2px 4px !important;
+  transition: all 0.2s ease;
+}
+
+.glass-menu-item:hover {
+  background: rgba(59, 130, 246, 0.1) !important;
+}
+
+/* 自定义菜单样式 */
+:deep(.glass-menu.ant-menu-horizontal) {
+  border-bottom: none !important;
+  background: transparent !important;
+  line-height: 1;
+}
+
+:deep(.glass-menu .ant-menu-item) {
+  border-radius: 12px;
+  margin: 0 6px !important;
+  padding: 10px 20px !important;
+  transition: all 0.3s ease;
+  color: rgba(75, 85, 99, 0.9) !important;
+  font-weight: 500;
+  backdrop-filter: blur(8px);
+  background: rgba(255, 255, 255, 0.4);
+  border: 1px solid transparent;
+}
+
+:deep(.glass-menu .ant-menu-item-selected) {
+  background: linear-gradient(135deg,
+  rgba(59, 130, 246, 0.2) 0%,
+  rgba(147, 51, 234, 0.2) 100%) !important;
+  color: rgb(59, 130, 246) !important;
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.15),
+  inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+:deep(.glass-menu .ant-menu-item:hover) {
+  background: rgba(255, 255, 255, 0.8) !important;
+  color: rgb(59, 130, 246) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+:deep(.glass-menu .ant-menu-item .anticon) {
+  color: rgba(75, 85, 99, 0.8) !important;
+  font-size: 16px;
+}
+
+:deep(.glass-menu .ant-menu-item-selected .anticon) {
+  color: rgb(59, 130, 246) !important;
+}
+
+:deep(.glass-menu .ant-menu-item a) {
+  color: inherit !important;
 }
 
 /* 用户下拉菜单样式 */
 :deep(.ant-dropdown-menu) {
-  padding: 8px !important;
+  padding: 12px 8px !important;
 }
 
 :deep(.ant-dropdown-menu-item) {
-  border-radius: 8px;
+  border-radius: 10px;
   margin: 2px 0 !important;
+  padding: 10px 16px !important;
+  transition: all 0.2s ease;
 }
 
 :deep(.ant-dropdown-menu-item:hover) {
-  background: rgba(24, 144, 255, 0.1) !important;
+  background: rgba(59, 130, 246, 0.1) !important;
 }
 
 /* 响应式设计 */
 @media (max-width: 768px) {
   #globalHeader {
     padding: 0 16px;
+    height: 60px;
   }
-  
+
   .title {
     font-size: 20px;
   }
-  
+
   .logo {
     height: 32px;
   }
-  
-  :deep(.ant-menu-item) {
+
+  :deep(.glass-menu .ant-menu-item) {
     margin: 0 4px !important;
-    padding: 6px 12px !important;
+    padding: 8px 12px !important;
     font-size: 14px;
+  }
+
+  .glass-header {
+    backdrop-filter: blur(12px);
+  }
+}
+
+@media (max-width: 640px) {
+  #globalHeader {
+    padding: 0 12px;
+  }
+
+  .title {
+    display: none;
+  }
+
+  :deep(.glass-menu .ant-menu-item) {
+    padding: 6px 10px !important;
+    font-size: 13px;
   }
 }
 </style>
