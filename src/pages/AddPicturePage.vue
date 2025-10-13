@@ -1,30 +1,49 @@
 <template>
-  <div id="addPicturePage">
-    <!-- 标题 -->
-    <h2 style="margin-bottom: 16px">
-      {{ route.query?.id ? '修改图片' : '创建图片' }}
-    </h2>
-    <a-typography-paragraph v-if="spaceId" type="secondary">
-      保存至空间：<a :href="`/space/${spaceId}`" target="_blank">{{ spaceId }}</a>
-    </a-typography-paragraph>
-    <!-- 选择上传方式 -->
-    <a-tabs v-model:activeKey="uploadType"
-      >>
-      <a-tab-pane key="file" tab="文件上传">
-        <PictureUpload :picture="picture" :spaceId="spaceId" :onSuccess="onSuccess" />
-      </a-tab-pane>
-      <a-tab-pane key="url" tab="URL 上传" force-render>
-        <UrlPictureUpload :picture="picture" :spaceId="spaceId" :onSuccess="onSuccess" />
-      </a-tab-pane>
-    </a-tabs>
+  <div id="addPicturePage" class="max-w-4xl mx-auto space-y-6">
+    <!-- 标题区域 -->
+    <div class="glass-container p-6 rounded-xl">
+      <h2 class="text-2xl font-bold text-text-primary mb-2">
+        {{ route.query?.id ? '修改图片' : '创建图片' }}
+      </h2>
+      <a-typography-paragraph v-if="spaceId" type="secondary" class="!mb-0">
+        保存至空间：<a :href="`/space/${spaceId}`" target="_blank" class="text-primary-blue hover:underline">{{ spaceId }}</a>
+      </a-typography-paragraph>
+    </div>
+
+    <!-- 上传方式选择 -->
+    <div class="glass-container p-6 rounded-xl">
+      <a-tabs v-model:activeKey="uploadType" class="custom-tabs">
+        <a-tab-pane key="file" tab="文件上传">
+          <PictureUpload :picture="picture" :spaceId="spaceId" :onSuccess="onSuccess" />
+        </a-tab-pane>
+        <a-tab-pane key="url" tab="URL 上传" force-render>
+          <UrlPictureUpload :picture="picture" :spaceId="spaceId" :onSuccess="onSuccess" />
+        </a-tab-pane>
+      </a-tabs>
+    </div>
+
     <!-- 图片编辑区域 -->
-    <div v-if="picture" class="edit-bar">
-      <a-space size="middle">
-        <a-button :icon="h(EditOutlined)" @click="doEditPicture">编辑图片</a-button>
-        <a-button type="primary" ghost :icon="h(FullscreenOutlined)" @click="doImagePainting">
-          AI 扩图
-        </a-button>
-      </a-space>
+    <div v-if="picture" class="glass-container p-6 rounded-xl text-center">
+      <div class="edit-bar">
+        <a-space size="middle">
+          <a-button 
+            :icon="h(EditOutlined)" 
+            @click="doEditPicture"
+            class="glass-container !border !border-glass-border !rounded-lg"
+          >
+            编辑图片
+          </a-button>
+          <a-button 
+            type="primary" 
+            ghost 
+            :icon="h(FullscreenOutlined)" 
+            @click="doImagePainting"
+            class="!rounded-lg bg-gradient-to-r from-primary-blue to-dark-blue hover:from-primary-blue-hover hover:to-primary-blue"
+          >
+            AI 扩图
+          </a-button>
+        </a-space>
+      </div>
       <ImageCropper
         ref="imageCropperRef"
         :imageUrl="picture?.url"
@@ -42,44 +61,57 @@
     </div>
 
     <!-- 图片信息表单 -->
-    <a-form v-if="picture" layout="vertical" :model="pictureForm" @finish="handleSubmit">
-      <a-form-item label="名称" name="name">
-        <a-input v-model:value="pictureForm.name" placeholder="请输入名称" />
-      </a-form-item>
-      <a-form-item label="简介" name="introduction">
-        <a-textarea
-          v-model:value="pictureForm.introduction"
-          placeholder="请输入简介"
-          :rows="2"
-          autoSize
-          allowClear
-        />
-      </a-form-item>
-      <a-form-item label="分类" name="category">
-        <a-auto-complete
-          v-model:value="pictureForm.category"
-          :options="categoryOptions"
-          placeholder="请输入分类"
-          allowClear
-        />
-      </a-form-item>
-      <a-form-item label="标签" name="tags">
-        <a-select
-          v-model:value="pictureForm.tags"
-          :options="tagOptions"
-          mode="tags"
-          placeholder="请输入标签"
-          allowClear
-        />
-      </a-form-item>
+    <div v-if="picture" class="glass-container p-6 rounded-xl">
+      <a-form layout="vertical" :model="pictureForm" @finish="handleSubmit" class="space-y-4">
+        <a-form-item label="名称" name="name" class="!mb-4">
+          <a-input 
+            v-model:value="pictureForm.name" 
+            placeholder="请输入名称" 
+            class="!rounded-lg"
+          />
+        </a-form-item>
+        <a-form-item label="简介" name="introduction" class="!mb-4">
+          <a-textarea
+            v-model:value="pictureForm.introduction"
+            placeholder="请输入简介"
+            :rows="3"
+            autoSize
+            allowClear
+            class="!rounded-lg"
+          />
+        </a-form-item>
+        <a-form-item label="分类" name="category" class="!mb-4">
+          <a-auto-complete
+            v-model:value="pictureForm.category"
+            :options="categoryOptions"
+            placeholder="请输入分类"
+            allowClear
+            class="!rounded-lg"
+          />
+        </a-form-item>
+        <a-form-item label="标签" name="tags" class="!mb-4">
+          <a-select
+            v-model:value="pictureForm.tags"
+            :options="tagOptions"
+            mode="tags"
+            placeholder="请输入标签"
+            allowClear
+            class="!rounded-lg"
+          />
+        </a-form-item>
 
-      <!-- 提交按钮 -->
-      <a-form-item>
-        <a-button type="primary" html-type="submit" style="width: 100%">
-          {{ route.query?.id ? '修改' : '创建' }}
-        </a-button>
-      </a-form-item>
-    </a-form>
+        <!-- 提交按钮 -->
+        <a-form-item class="!mb-0">
+          <a-button 
+            type="primary" 
+            html-type="submit" 
+            class="w-full !rounded-lg !h-12 text-lg font-medium bg-gradient-to-r from-primary-blue to-dark-blue hover:from-primary-blue-hover hover:to-primary-blue"
+          >
+            {{ route.query?.id ? '修改' : '创建' }}
+          </a-button>
+        </a-form-item>
+      </a-form>
+    </div>
   </div>
 </template>
 
@@ -259,12 +291,79 @@ watchEffect(() => {
 
 <style scoped>
 #addPicturePage {
-  max-width: 720px;
-  margin: 0 auto;
+  padding: 20px;
 }
 
-#addPicturePage .edit-bar {
+.edit-bar {
   text-align: center;
-  margin: 16px 0;
+  margin: 0;
+}
+
+/* 自定义标签样式 */
+:deep(.custom-tabs .ant-tabs-tab) {
+  border-radius: 8px 8px 0 0 !important;
+  background: var(--glass-bg-light) !important;
+  border: 1px solid var(--glass-border) !important;
+  margin-right: 8px !important;
+}
+
+:deep(.custom-tabs .ant-tabs-tab-active) {
+  background: linear-gradient(135deg, var(--primary-blue) 0%, var(--dark-blue) 100%) !important;
+  color: white !important;
+}
+
+:deep(.custom-tabs .ant-tabs-nav) {
+  margin-bottom: 16px !important;
+}
+
+:deep(.custom-tabs .ant-tabs-content) {
+  background: transparent !important;
+}
+
+/* 自定义表单样式 */
+:deep(.ant-form-item-label > label) {
+  color: var(--text-primary) !important;
+  font-weight: 600 !important;
+}
+
+:deep(.ant-input),
+:deep(.ant-input-password),
+:deep(.ant-select-selector),
+:deep(.ant-picker),
+:deep(.ant-input-number) {
+  border-radius: 8px !important;
+  border: 1px solid var(--glass-border) !important;
+  background: var(--glass-bg-light) !important;
+  backdrop-filter: blur(5px) !important;
+}
+
+:deep(.ant-input:focus),
+:deep(.ant-input-password:focus),
+:deep(.ant-select-focused .ant-select-selector),
+:deep(.ant-picker-focused) {
+  border-color: var(--primary-blue) !important;
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2) !important;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  #addPicturePage {
+    padding: 16px;
+    max-width: 100%;
+  }
+  
+  .glass-container {
+    padding: 16px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  #addPicturePage {
+    padding: 12px;
+  }
+  
+  .glass-container {
+    padding: 12px !important;
+  }
 }
 </style>

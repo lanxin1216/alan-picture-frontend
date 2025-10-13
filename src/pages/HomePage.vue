@@ -1,44 +1,57 @@
 <template>
-  <div id="homepage">
+  <div id="homepage" class="space-y-6">
     <!-- 搜索框 -->
-    <div class="search-bar">
+    <div class="search-bar glass-container p-6 rounded-xl">
       <a-input-search
         placeholder="从图库中搜索"
         v-model:value="searchParams.searchText"
         enter-button="搜索"
         size="large"
+        class="w-full"
         @search="doSearch"
       />
     </div>
 
     <!-- 分类 + 标签 -->
-    <a-tabs v-model:activeKey="selectedCategory" @change="doSearch">
-      <a-tab-pane key="all" tab="全部" />
-      <a-tab-pane v-for="category in categoryList" :key="category" :tab="category" />
-    </a-tabs>
-    <div class="tag-bar">
-      <span style="margin-right: 8px">标签：</span>
-      <a-space :size="[0, 8]" wrap>
-        <a-checkable-tag
-          v-for="(tag, index) in tagList"
-          :key="tag"
-          v-model:checked="selectedTagList[index]"
-          @change="doSearch"
-        >
-          {{ tag }}
-        </a-checkable-tag>
-      </a-space>
+    <div class="glass-container p-6 rounded-xl">
+      <a-tabs v-model:activeKey="selectedCategory" @change="doSearch" class="mb-4">
+        <a-tab-pane key="all" tab="全部" />
+        <a-tab-pane v-for="category in categoryList" :key="category" :tab="category" />
+      </a-tabs>
+      
+      <div class="tag-bar">
+        <span class="text-text-primary font-medium mr-3">标签：</span>
+        <a-space :size="[8, 8]" wrap>
+          <a-checkable-tag
+            v-for="(tag, index) in tagList"
+            :key="tag"
+            v-model:checked="selectedTagList[index]"
+            class="glass-container !border !border-glass-border !rounded-lg !px-3 !py-1 transition-all duration-300 hover:scale-105"
+            @change="doSearch"
+          >
+            {{ tag }}
+          </a-checkable-tag>
+        </a-space>
+      </div>
     </div>
 
     <!-- 图片列表 -->
-    <PictureList :dataList="dataList" :loading="loading" />
-    <a-pagination
-      style="text-align: right"
-      v-model:current="searchParams.current"
-      v-model:pageSize="searchParams.pageSize"
-      :total="total"
-      @change="onPageChange"
-    />
+    <div class="glass-container p-6 rounded-xl">
+      <PictureList :dataList="dataList" :loading="loading" />
+    </div>
+
+    <!-- 分页 -->
+    <div class="glass-container p-4 rounded-xl flex justify-center">
+      <a-pagination
+        v-model:current="searchParams.current"
+        v-model:pageSize="searchParams.pageSize"
+        :total="total"
+        show-size-changer
+        show-quick-jumper
+        @change="onPageChange"
+        class="custom-pagination"
+      />
+    </div>
   </div>
 </template>
 
@@ -137,12 +150,91 @@ const getTagCategoryOptions = async () => {
 </script>
 
 <style scoped>
-#homepage .search-bar {
-  max-width: 480px;
-  margin: 0 auto 16px;
+#homepage {
+  min-height: calc(100vh - 8rem);
 }
 
-#homepage .tag-bar {
-  margin-bottom: 16px;
+.search-bar {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.tag-bar {
+  margin-bottom: 0;
+}
+
+/* 自定义标签样式 */
+:deep(.ant-checkable-tag) {
+  background: var(--glass-bg-light) !important;
+  border: 1px solid var(--glass-border) !important;
+  border-radius: 8px !important;
+  padding: 4px 12px !important;
+  transition: all 0.3s ease !important;
+}
+
+:deep(.ant-checkable-tag-checked) {
+  background: linear-gradient(135deg, var(--primary-blue) 0%, var(--dark-blue) 100%) !important;
+  color: white !important;
+  border-color: var(--primary-blue) !important;
+  box-shadow: 0 4px 12px rgba(24, 144, 255, 0.3) !important;
+}
+
+:deep(.ant-checkable-tag:hover) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(24, 144, 255, 0.2) !important;
+}
+
+/* 自定义分页样式 */
+:deep(.custom-pagination .ant-pagination-item) {
+  border-radius: 8px !important;
+  border: 1px solid var(--glass-border) !important;
+  background: var(--glass-bg-light) !important;
+}
+
+:deep(.custom-pagination .ant-pagination-item-active) {
+  background: linear-gradient(135deg, var(--primary-blue) 0%, var(--dark-blue) 100%) !important;
+  border-color: var(--primary-blue) !important;
+}
+
+:deep(.custom-pagination .ant-pagination-item a) {
+  color: var(--text-primary) !important;
+}
+
+:deep(.custom-pagination .ant-pagination-item-active a) {
+  color: white !important;
+}
+
+:deep(.custom-pagination .ant-pagination-prev, .custom-pagination .ant-pagination-next) {
+  border-radius: 8px !important;
+  border: 1px solid var(--glass-border) !important;
+  background: var(--glass-bg-light) !important;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .search-bar {
+    max-width: 100%;
+    padding: 16px !important;
+  }
+  
+  .tag-bar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  :deep(.ant-space) {
+    width: 100%;
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 480px) {
+  #homepage {
+    padding: 8px;
+  }
+  
+  .glass-container {
+    padding: 12px !important;
+  }
 }
 </style>

@@ -1,12 +1,15 @@
 <template>
-  <div id="globalSider" v-if="loginUserStore.loginUser.id">
-    <a-layout-sider class="sider" width="200" breakpoint="lg">
-      <a-menu
-        mode="inline"
-        v-model:selectedKeys="current"
-        :items="menuItems"
-        @click="doMenuClick"
-      />
+  <div id="globalSider" v-if="loginUserStore.loginUser.id" class="h-full">
+    <a-layout-sider class="sider glass-container !h-full !border-r !border-glass-border" width="200" breakpoint="lg">
+      <div class="p-4">
+        <a-menu
+          mode="inline"
+          v-model:selectedKeys="current"
+          :items="menuItems"
+          class="bg-transparent border-none"
+          @click="doMenuClick"
+        />
+      </div>
     </a-layout-sider>
   </div>
 </template>
@@ -155,7 +158,59 @@ const doMenuClick = ({ key }: { key: string }) => {
 </script>
 
 <style scoped>
-#globalSider .ant-layout-sider {
-  background: none;
+#globalSider {
+  height: calc(100vh - 64px);
+}
+
+/* 自定义菜单样式 */
+:deep(.ant-menu-inline) {
+  border-right: none !important;
+  background: transparent !important;
+}
+
+:deep(.ant-menu-item) {
+  border-radius: 8px !important;
+  margin: 4px 0 !important;
+  height: 40px !important;
+  line-height: 40px !important;
+  transition: all 0.3s ease !important;
+}
+
+:deep(.ant-menu-item-selected) {
+  background: linear-gradient(135deg, var(--primary-blue) 0%, var(--dark-blue) 100%) !important;
+  color: white !important;
+  box-shadow: 0 4px 12px rgba(24, 144, 255, 0.3) !important;
+}
+
+:deep(.ant-menu-item:hover) {
+  background: rgba(24, 144, 255, 0.1) !important;
+  color: var(--primary-blue) !important;
+}
+
+:deep(.ant-menu-item-group-title) {
+  color: var(--text-secondary) !important;
+  font-weight: 600 !important;
+  margin-top: 16px !important;
+  margin-bottom: 8px !important;
+  padding-left: 16px !important;
+  font-size: 14px !important;
+}
+
+:deep(.ant-menu-item-group-list) {
+  margin: 0 !important;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  #globalSider {
+    height: calc(100vh - 56px);
+  }
+  
+  :deep(.ant-menu-item) {
+    margin: 2px 0 !important;
+    height: 36px !important;
+    line-height: 36px !important;
+    font-size: 14px !important;
+  }
 }
 </style>
