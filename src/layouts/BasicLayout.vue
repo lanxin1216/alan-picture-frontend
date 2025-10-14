@@ -23,7 +23,6 @@
 
       <!-- 底部 -->
       <a-layout-footer class="footer glass-container">
-        <div class="text-center text-text-secondary py-2">
           <a
             href="https://github.com/lanxin1216"
             target="_blank"
@@ -31,7 +30,6 @@
           >
             屿图 by @Alan
           </a>
-        </div>
       </a-layout-footer>
     </a-layout>
   </div>
@@ -86,12 +84,11 @@ const showSider = computed(() => {
 }
 
 #basicLayout :deep(.ant-layout-footer) {
-  background: var(--glass-bg-light);
+  background: transparent;
   backdrop-filter: blur(10px);
   border-top: 1px solid var(--glass-border);
-  height: 64px;
-  line-height: 64px;
   text-align: center;
+  padding: 16px 24px;
 }
 
 /* 响应式设计 */

@@ -2,7 +2,7 @@
   <div id="globalSider" v-if="loginUserStore.loginUser.id">
     <a-layout-sider
       class="sider glass-container !h-full !border-r !border-glass-border"
-      width="200"
+      width="180"
       breakpoint="lg"
     >
       <div class="p-4">
