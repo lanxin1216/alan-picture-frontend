@@ -5,14 +5,14 @@
       <a-layout-header class="header glass-container">
         <GlobalHeader />
       </a-layout-header>
-      
+
       <!-- 主要内容区域 -->
       <a-layout>
         <!-- 侧边栏 -->
         <a-layout-sider v-if="showSider" class="sider glass-container" width="200">
           <GlobalSider />
         </a-layout-sider>
-        
+
         <!-- 内容区域 -->
         <a-layout-content class="content" :class="{ 'ml-0': !showSider }">
           <div class="glass-container p-6 min-h-[calc(100vh-8rem)]">
@@ -20,7 +20,7 @@
           </div>
         </a-layout-content>
       </a-layout>
-      
+
       <!-- 底部 -->
       <a-layout-footer class="footer glass-container">
         <div class="text-center text-text-secondary py-2">
@@ -44,7 +44,7 @@ const loginUserStore = useLoginUserStore()
 
 // 控制侧边栏显示 - 只有当用户已登录时才显示侧边栏
 const showSider = computed(() => {
-  return loginUserStore.loginUser?.userRole && 
+  return loginUserStore.loginUser?.userRole &&
          loginUserStore.loginUser.userRole !== ACCESS_ENUM.NOT_LOGIN
 })
 </script>
@@ -60,12 +60,12 @@ const showSider = computed(() => {
 }
 
 #basicLayout :deep(.ant-layout-header) {
-  background: var(--glass-bg-light);
+  background: transparent;
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--glass-border);
   height: 64px;
   line-height: 64px;
-  padding: 0 20px;
+  padding: 0;
 }
 
 #basicLayout :deep(.ant-layout-sider) {

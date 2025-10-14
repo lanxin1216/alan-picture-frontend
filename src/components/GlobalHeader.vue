@@ -5,7 +5,7 @@
       <RouterLink to="/" class="flex items-center space-x-3 hover:opacity-80 transition-opacity">
         <img alt="logo" class="logo w-10 h-10 rounded-xl" src="../assets/logo.png" />
         <div
-          class="title text-2xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent"
+          class="title text-2xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text p-2.5"
         >
           屿图
         </div>
@@ -26,40 +26,29 @@
     <!-- 用户登录状态 -->
     <div class="user-login-status">
       <div v-if="loginUserStore.loginUser.id" class="flex items-center space-x-3">
-        <a-dropdown :overlay-style="{ borderRadius: '16px', padding: '8px' }">
-          <a-button type="text" class="flex items-center space-x-2 !px-4 !py-2 glass-user-btn">
-            <a-avatar
-              :src="loginUserStore.loginUser.userAvatar"
-              size="small"
-              class="border-2 border-gray-200 shadow-lg"
-            />
-            <span class="text-gray-700 font-medium">
-              {{ loginUserStore.loginUser.userName ?? '无名' }}
-            </span>
-            <div class="i-chevron-down w-3 h-3 text-gray-500"></div>
-          </a-button>
-          <template #overlay>
-            <a-menu class="glass-dropdown">
-              <a-menu-item class="glass-menu-item">
-                <router-link
-                  to="/my_space"
-                  class="flex items-center space-x-3 text-gray-700 hover:text-primary-blue transition-colors"
-                >
-                  <UserOutlined class="text-lg" />
-                  <span class="font-medium">我的空间</span>
-                </router-link>
-              </a-menu-item>
-              <a-menu-divider class="!my-2 !mx-2 border-gray-200" />
-              <a-menu-item
-                @click="doLogout"
-                class="glass-menu-item text-red-500 hover:!bg-red-50/80"
-              >
-                <LogoutOutlined class="text-lg" />
-                <span class="font-medium">退出登录</span>
-              </a-menu-item>
-            </a-menu>
-          </template>
-        </a-dropdown>
+        <ASpace size="middle">
+          <a-avatar :src="loginUserStore.loginUser.userAvatar" size="large" />
+          <span>
+            {{ loginUserStore.loginUser.userName ?? '无名' }}
+          </span>
+          <a-dropdown :overlay-style="{ borderRadius: '16px' } " arrow>
+              <BarsOutlined style="font-size: 24px" />
+            <template #overlay>
+              <a-menu>
+                <a-menu-item>
+                  <router-link to="/my_space">
+                    <UserOutlined />
+                    我的空间
+                  </router-link>
+                </a-menu-item>
+                <a-menu-item @click="doLogout">
+                  <LogoutOutlined />
+                  退出登录
+                </a-menu-item>
+              </a-menu>
+            </template>
+          </a-dropdown>
+        </ASpace>
       </div>
 
       <div v-else>
@@ -77,7 +66,7 @@
 
 <script lang="ts" setup>
 import { h, ref } from 'vue'
-import { HomeOutlined, LogoutOutlined, UserOutlined, UploadOutlined } from '@ant-design/icons-vue'
+import { HomeOutlined, LogoutOutlined, UserOutlined, UploadOutlined,BarsOutlined } from '@ant-design/icons-vue'
 import { message } from 'ant-design-vue'
 import { useRouter } from 'vue-router'
 import { useLoginUserStore } from '@/stores/useLoginUserStore.ts'
@@ -144,18 +133,19 @@ const doLogout = async () => {
 
 <style scoped>
 #globalHeader {
-  height: 72px;
+  background: transparent;
+  padding: 0 24px;
 }
 
 .title {
   font-size: 24px;
   font-weight: bold;
+  padding: 0 10px;
 }
 
 .logo {
-  height: 40px;
+  height: 60px;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 /* 玻璃风格类 */
@@ -166,43 +156,25 @@ const doLogout = async () => {
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
 
-.glass-user-btn {
-  backdrop-filter: blur(12px);
-  background: rgba(255, 255, 255, 0.6) !important;
-  border: 1px solid rgba(255, 255, 255, 0.8) !important;
-  border-radius: 12px !important;
-  transition: all 0.3s ease;
-}
-
-.glass-user-btn:hover {
-  background: rgba(255, 255, 255, 0.9) !important;
-  border-color: rgba(59, 130, 246, 0.3) !important;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
 .glass-login-btn {
   backdrop-filter: blur(12px);
-  background: linear-gradient(135deg,
-  rgba(59, 130, 246, 0.9) 0%,
-  rgba(147, 51, 234, 0.9) 100%) !important;
+  background: linear-gradient(
+    135deg,
+    rgba(59, 130, 246, 0.9) 0%,
+    rgba(147, 51, 234, 0.9) 100%
+  ) !important;
   border: 1px solid rgba(255, 255, 255, 0.5) !important;
   transition: all 0.3s ease;
 }
 
 .glass-login-btn:hover {
-  background: linear-gradient(135deg,
-  rgba(59, 130, 246, 1) 0%,
-  rgba(147, 51, 234, 1) 100%) !important;
+  background: linear-gradient(
+    135deg,
+    rgba(59, 130, 246, 1) 0%,
+    rgba(147, 51, 234, 1) 100%
+  ) !important;
   transform: translateY(-1px);
   box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4) !important;
-}
-
-.glass-dropdown {
-  backdrop-filter: blur(20px);
-  background: rgba(255, 255, 255, 0.95) !important;
-  border: 1px solid rgba(255, 255, 255, 0.8) !important;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.2) !important;
 }
 
 .glass-menu-item {
@@ -230,18 +202,20 @@ const doLogout = async () => {
   color: rgba(75, 85, 99, 0.9) !important;
   font-weight: 500;
   backdrop-filter: blur(8px);
-  background: rgba(255, 255, 255, 0.4);
   border: 1px solid transparent;
 }
 
 :deep(.glass-menu .ant-menu-item-selected) {
-  background: linear-gradient(135deg,
-  rgba(59, 130, 246, 0.2) 0%,
-  rgba(147, 51, 234, 0.2) 100%) !important;
+  background: linear-gradient(
+    135deg,
+    rgba(59, 130, 246, 0.2) 0%,
+    rgba(147, 51, 234, 0.2) 100%
+  ) !important;
   color: rgb(59, 130, 246) !important;
   border: 1px solid rgba(59, 130, 246, 0.2);
-  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.15),
-  inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  box-shadow:
+    0 4px 15px rgba(59, 130, 246, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 
 :deep(.glass-menu .ant-menu-item:hover) {
