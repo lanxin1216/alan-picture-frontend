@@ -40,7 +40,7 @@
             <a-button 
               type="primary" 
               html-type="submit"
-              class="!rounded-lg !h-10 bg-gradient-to-r from-primary-blue to-dark-blue hover:from-primary-blue-hover hover:to-primary-blue"
+              class="!rounded-lg !h-10 core-btn-primary"
             >
               搜索
             </a-button>
@@ -80,7 +80,7 @@
               <a-button 
                 danger 
                 @click="doDelete(record.id)"
-                class="!rounded-lg bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700"
+                class="!rounded-lg danger-btn"
               >
                 删除
               </a-button>
@@ -267,6 +267,42 @@ const doDelete = async (id: number) => {
 
 :deep(.custom-table .ant-pagination-item-active a) {
   color: white !important;
+}
+
+/* 核心按钮样式 */
+.core-btn-primary {
+  background: var(--core-btn-gradient) !important;
+  border: none !important;
+  box-shadow: var(--core-btn-shadow) !important;
+  color: white !important;
+}
+
+.core-btn-primary:hover {
+  background: var(--core-btn-gradient-hover) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4) !important;
+}
+
+/* 危险按钮样式 */
+.danger-btn {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+  border: none !important;
+  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3) !important;
+  color: white !important;
+}
+
+.danger-btn:hover {
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4) !important;
+}
+
+/* 选中效果样式 */
+.selected-effect {
+  background: var(--selected-bg-gradient) !important;
+  color: var(--selected-text-color) !important;
+  border: 1px solid var(--selected-border-color) !important;
+  box-shadow: var(--selected-shadow) !important;
 }
 
 /* 响应式设计 */

@@ -173,10 +173,10 @@ const getTagCategoryOptions = async () => {
 }
 
 :deep(.ant-checkable-tag-checked) {
-  background: linear-gradient(135deg, var(--primary-blue) 0%, var(--dark-blue) 100%) !important;
-  color: white !important;
+  background: var(--selected-bg) !important;
+  color: var(--text-primary) !important;
   border-color: var(--primary-blue) !important;
-  box-shadow: 0 4px 12px rgba(24, 144, 255, 0.3) !important;
+  box-shadow: 0 4px 12px rgba(24, 144, 255, 0.2) !important;
 }
 
 :deep(.ant-checkable-tag:hover) {
@@ -192,7 +192,7 @@ const getTagCategoryOptions = async () => {
 }
 
 :deep(.custom-pagination .ant-pagination-item-active) {
-  background: linear-gradient(135deg, var(--primary-blue) 0%, var(--dark-blue) 100%) !important;
+  background: var(--selected-bg) !important;
   border-color: var(--primary-blue) !important;
 }
 

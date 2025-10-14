@@ -65,7 +65,7 @@
             type="primary" 
             html-type="submit" 
             size="large"
-            class="w-full !rounded-lg !h-12 text-lg font-medium bg-gradient-to-r from-primary-blue to-dark-blue hover:from-primary-blue-hover hover:to-primary-blue transition-all duration-300 hover:scale-105"
+            class="w-full !rounded-lg !h-12 text-lg font-medium core-btn-primary transition-all duration-300 hover:scale-105"
             :loading="loading"
           >
             登录
@@ -179,6 +179,28 @@ const handleSubmit = async (values: any) => {
   height: 48px !important;
   font-size: 16px !important;
   font-weight: 500 !important;
+}
+
+/* 核心按钮样式 */
+.core-btn-primary {
+  background: var(--core-btn-gradient) !important;
+  border: none !important;
+  box-shadow: var(--core-btn-shadow) !important;
+  color: white !important;
+}
+
+.core-btn-primary:hover {
+  background: var(--core-btn-gradient-hover) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4) !important;
+}
+
+/* 选中效果样式 */
+.selected-effect {
+  background: var(--selected-bg-gradient) !important;
+  color: var(--selected-text-color) !important;
+  border: 1px solid var(--selected-border-color) !important;
+  box-shadow: var(--selected-shadow) !important;
 }
 
 /* 响应式设计 */

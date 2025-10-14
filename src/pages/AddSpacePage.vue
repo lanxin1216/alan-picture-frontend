@@ -20,7 +20,7 @@
         />
       </a-form-item>
       <a-form-item>
-        <a-button type="primary" html-type="submit" style="width: 100%" :loading="loading">
+        <a-button type="primary" html-type="submit" style="width: 100%" :loading="loading" class="core-btn-primary">
           提交
         </a-button>
       </a-form-item>

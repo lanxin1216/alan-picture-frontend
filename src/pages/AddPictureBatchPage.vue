@@ -20,7 +20,7 @@
         <a-input v-model:value="formData.namePrefix" placeholder="请输入名称前缀，会自动补充序号" />
       </a-form-item>
       <a-form-item>
-        <a-button type="primary" html-type="submit" style="width: 100%" :loading="loading">
+        <a-button type="primary" html-type="submit" style="width: 100%" :loading="loading" class="core-btn-primary">
           执行任务
         </a-button>
       </a-form-item>

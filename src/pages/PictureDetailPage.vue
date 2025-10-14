@@ -113,7 +113,7 @@
                 v-if="canEdit" 
                 type="default" 
                 @click="doEdit"
-                class="w-full !rounded-lg !h-12 glass-container !border !border-glass-border hover:bg-blue-50"
+                class="w-full !rounded-lg !h-12 selected-bg"
                 size="large"
               >
                 <template #icon>
@@ -125,7 +125,7 @@
                 v-if="canDelete" 
                 danger 
                 @click="doDelete"
-                class="w-full !rounded-lg !h-12 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700"
+                class="w-full !rounded-lg !h-12 selected-bg"
                 size="large"
               >
                 <template #icon>
@@ -136,7 +136,7 @@
               <a-button 
                 type="primary" 
                 @click="doDownload"
-                class="w-full !rounded-lg !h-12 bg-gradient-to-r from-primary-blue to-dark-blue hover:from-primary-blue-hover hover:to-primary-blue"
+                class="w-full !rounded-lg !h-12 core-btn-primary"
                 size="large"
               >
                 <template #icon>
@@ -148,7 +148,7 @@
                 type="primary" 
                 ghost 
                 @click="doShare"
-                class="w-full !rounded-lg !h-12 border-primary-blue text-primary-blue hover:bg-blue-50"
+                class="w-full !rounded-lg !h-12 selected-bg"
                 size="large"
               >
                 <template #icon>

@@ -26,7 +26,7 @@
             type="primary"
             :href="`/add_picture?spaceId=${id}`"
             target="_blank"
-            class="!rounded-lg bg-gradient-to-r from-primary-blue to-dark-blue hover:from-primary-blue-hover hover:to-primary-blue"
+            class="!rounded-lg core-btn-primary"
           >
             + 创建图片
           </a-button>
@@ -44,7 +44,7 @@
             :icon="h(TeamOutlined)"
             :href="`/spaceUserManage/${id}`"
             target="_blank"
-            class="!rounded-lg bg-gradient-to-r from-primary-blue to-dark-blue hover:from-primary-blue-hover hover:to-primary-blue"
+            class="!rounded-lg selected-bg"
           >
             成员管理
           </a-button>
@@ -55,7 +55,7 @@
             :icon="h(BarChartOutlined)"
             :href="`/space_analyze?spaceId=${id}`"
             target="_blank"
-            class="!rounded-lg bg-gradient-to-r from-primary-blue to-dark-blue hover:from-primary-blue-hover hover:to-primary-blue"
+            class="!rounded-lg selected-bg"
           >
             空间分析
           </a-button>
@@ -249,7 +249,7 @@ watch(
 }
 
 :deep(.custom-pagination .ant-pagination-item-active) {
-  background: linear-gradient(135deg, var(--primary-blue) 0%, var(--dark-blue) 100%) !important;
+  background: var(--selected-bg) !important;
   border-color: var(--primary-blue) !important;
 }
 

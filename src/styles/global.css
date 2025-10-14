@@ -3,11 +3,21 @@
 @tailwind utilities;
 
 :root {
-  /* 主色调 */
-  --primary-blue: #1890ff;
-  --primary-blue-hover: #40a9ff;
+  /* 主色调 - 匹配GlobalHeader配色 */
+  --primary-blue: #3b82f6;
+  --primary-blue-hover: #2563eb;
   --light-blue: #e6f7ff;
-  --dark-blue: #0050b3;
+  --dark-blue: #9333ea;
+  
+  /* 按钮配色系统 */
+  --core-btn-gradient: linear-gradient(135deg, rgba(59, 130, 246, 0.9) 0%, rgba(147, 51, 234, 0.9) 100%);
+  --core-btn-gradient-hover: linear-gradient(135deg, rgba(59, 130, 246, 1) 0%, rgba(147, 51, 234, 1) 100%);
+  --core-btn-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+  
+  --selected-bg-gradient: linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(147, 51, 234, 0.2) 100%);
+  --selected-text-color: rgb(59, 130, 246);
+  --selected-border-color: rgba(59, 130, 246, 0.2);
+  --selected-shadow: 0 4px 15px rgba(59, 130, 246, 0.15);
 
   /* 中性色 */
   --text-primary: rgba(0, 0, 0, 0.85);
@@ -99,8 +109,10 @@ body {
 }
 
 .ant-menu-item-selected {
-  background: linear-gradient(135deg, var(--primary-blue) 0%, var(--light-blue) 100%) !important;
-  color: white !important;
+  background: var(--selected-bg-gradient) !important;
+  color: var(--selected-text-color) !important;
+  border: 1px solid var(--selected-border-color);
+  box-shadow: var(--selected-shadow);
 }
 
 .ant-menu-item:hover {
@@ -134,12 +146,15 @@ body {
 }
 
 .ant-btn-primary {
-  background: linear-gradient(135deg, var(--primary-blue) 0%, var(--dark-blue) 100%);
+  background: var(--core-btn-gradient);
   border: none;
+  box-shadow: var(--core-btn-shadow);
 }
 
 .ant-btn-primary:hover {
-  background: linear-gradient(135deg, var(--primary-blue-hover) 0%, var(--primary-blue) 100%);
+  background: var(--core-btn-gradient-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
 }
 
 .ant-card {
@@ -157,8 +172,9 @@ body {
 }
 
 .ant-pagination-item-active {
-  background: var(--primary-blue);
+  background: var(--core-btn-gradient);
   border-color: var(--primary-blue);
+  box-shadow: var(--core-btn-shadow);
 }
 
 .ant-dropdown-menu {

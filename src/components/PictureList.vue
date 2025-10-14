@@ -28,14 +28,14 @@
                 <div class="flex flex-wrap gap-1 mt-2">
                   <a-tag 
                     color="blue" 
-                    class="!rounded-lg !border !border-blue-200 !bg-blue-50 !text-blue-600"
+                    class="!rounded-lg !border !border-blue-200 !bg-blue-50 !text-blue-600 selected-bg"
                   >
                     {{ picture.category ?? '默认' }}
                   </a-tag>
                   <a-tag 
                     v-for="tag in picture.tags" 
                     :key="tag"
-                    class="!rounded-lg !border !border-gray-200 !bg-gray-50 !text-gray-600"
+                    class="!rounded-lg !border !border-gray-200 !bg-gray-50 !text-gray-600 selected-bg"
                   >
                     {{ tag }}
                   </a-tag>

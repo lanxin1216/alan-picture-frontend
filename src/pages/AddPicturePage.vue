@@ -38,7 +38,7 @@
             ghost 
             :icon="h(FullscreenOutlined)" 
             @click="doImagePainting"
-            class="!rounded-lg bg-gradient-to-r from-primary-blue to-dark-blue hover:from-primary-blue-hover hover:to-primary-blue"
+            class="!rounded-lg core-btn-primary"
           >
             AI 扩图
           </a-button>
@@ -105,7 +105,7 @@
           <a-button 
             type="primary" 
             html-type="submit" 
-            class="w-full !rounded-lg !h-12 text-lg font-medium bg-gradient-to-r from-primary-blue to-dark-blue hover:from-primary-blue-hover hover:to-primary-blue"
+            class="w-full !rounded-lg !h-12 text-lg font-medium core-btn-primary"
           >
             {{ route.query?.id ? '修改' : '创建' }}
           </a-button>
@@ -308,8 +308,8 @@ watchEffect(() => {
 }
 
 :deep(.custom-tabs .ant-tabs-tab-active) {
-  background: linear-gradient(135deg, var(--primary-blue) 0%, var(--dark-blue) 100%) !important;
-  color: white !important;
+  background: var(--selected-bg) !important;
+  color: var(--text-primary) !important;
 }
 
 :deep(.custom-tabs .ant-tabs-nav) {

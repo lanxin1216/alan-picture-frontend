@@ -21,7 +21,7 @@
       <!-- 返回首页按钮 -->
       <RouterLink 
         to="/" 
-        class="inline-block bg-gradient-to-r from-primary-blue to-dark-blue hover:from-primary-blue-hover hover:to-primary-blue text-white font-medium py-3 px-6 rounded-lg transition-all duration-300 hover:scale-105 shadow-md"
+        class="inline-block core-btn-primary text-white font-medium py-3 px-6 rounded-lg transition-all duration-300 hover:scale-105 shadow-md"
       >
         返回首页
       </RouterLink>

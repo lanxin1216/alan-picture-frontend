@@ -4,8 +4,8 @@
     <a-flex justify="space-between">
       <h2>图片管理</h2>
       <a-space>
-        <a-button type="primary" href="/add_picture" target="_blank">+ 创建图片</a-button>
-        <a-button type="primary" href="/add_picture/batch" target="_blank" ghost>+ 批量创建图片</a-button>
+        <a-button type="primary" href="/add_picture" target="_blank" class="core-btn-primary">+ 创建图片</a-button>
+        <a-button type="primary" href="/add_picture/batch" target="_blank" ghost class="selected-bg">+ 批量创建图片</a-button>
       </a-space>
     </a-flex>
 
@@ -40,7 +40,7 @@
         />
       </a-form-item>
       <a-form-item>
-        <a-button type="primary" html-type="submit">搜索</a-button>
+        <a-button type="primary" html-type="submit" class="core-btn-primary">搜索</a-button>
       </a-form-item>
     </a-form>
 
