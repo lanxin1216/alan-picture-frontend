@@ -1,5 +1,5 @@
 <template>
-  <div id="globalSider" v-if="loginUserStore.loginUser.id" class="h-full">
+  <div id="globalSider" v-if="loginUserStore.loginUser.id">
     <a-layout-sider
       class="sider glass-container !h-full !border-r !border-glass-border"
       width="200"
@@ -183,6 +183,7 @@ const doMenuClick = ({ key }: { key: string }) => {
 <style scoped>
 #globalSider {
   height: calc(100vh - 64px);
+  padding-top: 8px;
 }
 
 /* 自定义菜单样式 */

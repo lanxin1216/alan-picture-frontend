@@ -81,14 +81,13 @@ body {
 }
 
 .ant-layout-sider {
-  background: var(--glass-bg-light) !important;
+  background: transparent !important;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border-right: 1px solid var(--glass-border);
 }
 
 .ant-layout-content {
-  background: transparent;
+  background: transparent !important;
 }
 
 .ant-layout-footer {

@@ -1,5 +1,8 @@
 <template>
-  <div id="basicLayout" class="min-h-screen bg-gradient-to-br from-blue-50 via-blue-100 to-gray-100">
+  <div
+    id="basicLayout"
+    class="min-h-screen bg-gradient-to-br from-blue-50 via-blue-100 to-gray-100"
+  >
     <a-layout class="min-h-screen bg-transparent">
       <!-- 头部 -->
       <a-layout-header class="header glass-container">
@@ -9,10 +12,7 @@
       <!-- 主要内容区域 -->
       <a-layout>
         <!-- 侧边栏 -->
-        <a-layout-sider v-if="showSider" class="sider glass-container" width="200">
-          <GlobalSider />
-        </a-layout-sider>
-
+        <GlobalSider />
         <!-- 内容区域 -->
         <a-layout-content class="content" :class="{ 'ml-0': !showSider }">
           <div class="glass-container p-6 min-h-[calc(100vh-8rem)]">
@@ -24,7 +24,11 @@
       <!-- 底部 -->
       <a-layout-footer class="footer glass-container">
         <div class="text-center text-text-secondary py-2">
-          <a href="https://github.com/lanxin1216" target="_blank" class="hover:text-primary-blue transition-colors">
+          <a
+            href="https://github.com/lanxin1216"
+            target="_blank"
+            class="hover:text-primary-blue transition-colors"
+          >
             屿图 by @Alan
           </a>
         </div>
@@ -44,8 +48,10 @@ const loginUserStore = useLoginUserStore()
 
 // 控制侧边栏显示 - 只有当用户已登录时才显示侧边栏
 const showSider = computed(() => {
-  return loginUserStore.loginUser?.userRole &&
-         loginUserStore.loginUser.userRole !== ACCESS_ENUM.NOT_LOGIN
+  return (
+    loginUserStore.loginUser?.userRole &&
+    loginUserStore.loginUser.userRole !== ACCESS_ENUM.NOT_LOGIN
+  )
 })
 </script>
 
@@ -68,16 +74,9 @@ const showSider = computed(() => {
   padding: 0;
 }
 
-#basicLayout :deep(.ant-layout-sider) {
-  background: var(--glass-bg-light) !important;
-  backdrop-filter: blur(10px);
-  border-right: 1px solid var(--glass-border);
-  min-height: calc(100vh - 128px);
-}
-
 #basicLayout :deep(.ant-layout-content) {
   background: transparent;
-  padding: 16px;
+  padding: 8px;
   min-height: calc(100vh - 128px);
   transition: margin-left 0.3s ease;
 }
