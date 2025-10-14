@@ -31,8 +31,8 @@
           <span>
             {{ loginUserStore.loginUser.userName ?? '无名' }}
           </span>
-          <a-dropdown :overlay-style="{ borderRadius: '16px' } " arrow>
-              <BarsOutlined style="font-size: 24px" />
+          <a-dropdown :overlay-style="{ borderRadius: '16px' }" arrow>
+            <BarsOutlined style="font-size: 24px" />
             <template #overlay>
               <a-menu>
                 <a-menu-item>
@@ -66,7 +66,13 @@
 
 <script lang="ts" setup>
 import { h, ref } from 'vue'
-import { HomeOutlined, LogoutOutlined, UserOutlined, UploadOutlined,BarsOutlined } from '@ant-design/icons-vue'
+import {
+  HomeOutlined,
+  LogoutOutlined,
+  UserOutlined,
+  UploadOutlined,
+  BarsOutlined,
+} from '@ant-design/icons-vue'
 import { message } from 'ant-design-vue'
 import { useRouter } from 'vue-router'
 import { useLoginUserStore } from '@/stores/useLoginUserStore.ts'
@@ -191,7 +197,6 @@ const doLogout = async () => {
   margin: 0 6px !important;
   padding: 10px 20px !important;
   transition: all 0.3s ease;
-  color: rgba(75, 85, 99, 0.9) !important;
   font-weight: 500;
   backdrop-filter: blur(8px);
   border: 1px solid transparent;

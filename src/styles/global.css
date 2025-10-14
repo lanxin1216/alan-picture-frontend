@@ -80,23 +80,6 @@ body {
   border-bottom: 1px solid var(--glass-border);
 }
 
-.ant-layout-sider {
-  background: transparent !important;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-}
-
-.ant-layout-content {
-  background: transparent !important;
-}
-
-.ant-layout-footer {
-  background: var(--glass-bg-light);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border-top: 1px solid var(--glass-border);
-}
-
 /* Ant Design组件玻璃质感优化 */
 .ant-menu {
   background: transparent !important;
