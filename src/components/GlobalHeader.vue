@@ -1,5 +1,5 @@
 <template>
-  <div id="globalHeader" class="h-full flex items-center justify-between px-6 glass-header">
+  <div id="globalHeader" class="h-full flex items-center justify-between px-6">
     <!-- Logo区域 -->
     <div class="flex items-center space-x-4">
       <RouterLink to="/" class="flex items-center space-x-3 hover:opacity-80 transition-opacity">
@@ -148,14 +148,6 @@ const doLogout = async () => {
   border-radius: 12px;
 }
 
-/* 玻璃风格类 */
-.glass-header {
-  backdrop-filter: blur(16px) saturate(180%);
-  background: rgba(255, 255, 255, 0.75);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-}
-
 .glass-login-btn {
   backdrop-filter: blur(12px);
   background: linear-gradient(
@@ -273,10 +265,6 @@ const doLogout = async () => {
     margin: 0 4px !important;
     padding: 8px 12px !important;
     font-size: 14px;
-  }
-
-  .glass-header {
-    backdrop-filter: blur(12px);
   }
 }
 
