@@ -9,8 +9,8 @@
       <template #renderItem="{ item: picture }">
         <a-list-item style="padding: 0">
           <!-- 单张图片 -->
-          <a-card 
-            hoverable 
+          <a-card
+            hoverable
             @click="doClickPicture(picture)"
             class="glass-container !border !border-glass-border !rounded-xl overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-lg"
           >
@@ -26,14 +26,14 @@
             <a-card-meta :title="picture.name" class="p-3">
               <template #description>
                 <div class="flex flex-wrap gap-1 mt-2">
-                  <a-tag 
-                    color="blue" 
+                  <a-tag
+                    color="blue"
                     class="!rounded-lg !border !border-blue-200 !bg-blue-50 !text-blue-600 selected-bg"
                   >
                     {{ picture.category ?? '默认' }}
                   </a-tag>
-                  <a-tag 
-                    v-for="tag in picture.tags" 
+                  <a-tag
+                    v-for="tag in picture.tags"
                     :key="tag"
                     class="!rounded-lg !border !border-gray-200 !bg-gray-50 !text-gray-600 selected-bg"
                   >
@@ -44,22 +44,22 @@
             </a-card-meta>
             <template v-if="showOp" #actions>
               <div class="flex justify-around p-2">
-                <search-outlined 
-                  @click="(e) => doSearch(picture, e)" 
+                <search-outlined
+                  @click="(e) => doSearch(picture, e)"
                   class="text-blue-500 hover:text-blue-700 cursor-pointer transition-colors"
                 />
-                <share-alt-outlined 
-                  @click="(e) => doShare(picture, e)" 
+                <share-alt-outlined
+                  @click="(e) => doShare(picture, e)"
                   class="text-green-500 hover:text-green-700 cursor-pointer transition-colors"
                 />
-                <edit-outlined 
-                  v-if="canEdit" 
-                  @click="(e) => doEdit(picture, e)" 
+                <edit-outlined
+                  v-if="canEdit"
+                  @click="(e) => doEdit(picture, e)"
                   class="text-orange-500 hover:text-orange-700 cursor-pointer transition-colors"
                 />
-                <delete-outlined 
-                  v-if="canDelete" 
-                  @click="(e) => doDelete(picture, e)" 
+                <delete-outlined
+                  v-if="canDelete"
+                  @click="(e) => doDelete(picture, e)"
                   class="text-red-500 hover:text-red-700 cursor-pointer transition-colors"
                 />
               </div>
@@ -70,7 +70,7 @@
     </a-list>
   </div>
 
-  <ShareModal ref="shareModalRef" :link="shareLink" />
+  <ShareModal ref="shareModalRef" :link="shareLink" title="分享图片" />
 </template>
 
 <script setup lang="ts">
@@ -205,11 +205,11 @@ const doShare = (picture: API.PictureVO, e: Event) => {
   :deep(.ant-card-body) {
     padding: 8px !important;
   }
-  
+
   :deep(.ant-card-meta-title) {
     font-size: 13px !important;
   }
-  
+
   :deep(.ant-tag) {
     font-size: 11px !important;
     padding: 1px 4px !important;

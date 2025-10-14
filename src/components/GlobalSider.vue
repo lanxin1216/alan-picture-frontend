@@ -1,6 +1,10 @@
 <template>
   <div id="globalSider" v-if="loginUserStore.loginUser.id" class="h-full">
-    <a-layout-sider class="sider glass-container !h-full !border-r !border-glass-border" width="200" breakpoint="lg">
+    <a-layout-sider
+      class="sider glass-container !h-full !border-r !border-glass-border"
+      width="200"
+      breakpoint="lg"
+    >
       <div class="p-4">
         <a-menu
           mode="inline"
@@ -16,7 +20,13 @@
 
 <script lang="ts" setup>
 import { computed, h, ref, watchEffect } from 'vue'
-import { PictureOutlined, UserOutlined, TeamOutlined, CloudOutlined, SettingOutlined } from '@ant-design/icons-vue'
+import {
+  PictureOutlined,
+  UserOutlined,
+  TeamOutlined,
+  CloudOutlined,
+  SettingOutlined,
+} from '@ant-design/icons-vue'
 import { useRouter } from 'vue-router'
 import { useLoginUserStore } from '@/stores/useLoginUserStore.ts'
 import checkAccess from '@/access/checkAccess.ts'
@@ -100,10 +110,10 @@ const menuItems = computed(() => {
       type: 'group',
       label: '系统管理',
       key: 'systemManagement',
-      children: filteredAdminMenus.map(menu => ({
+      children: filteredAdminMenus.map((menu) => ({
         ...menu,
-        icon: menu.icon || (() => h(SettingOutlined)) // 默认使用设置图标
-      }))
+        icon: menu.icon || (() => h(SettingOutlined)), // 默认使用设置图标
+      })),
     }
     menuList.push(adminMenuGroup)
   }
@@ -146,9 +156,22 @@ const router = useRouter()
 
 // 当前选中菜单
 const current = ref<string[]>([])
-// 监听路由变化，更新当前选中菜单
+
+// 当前选中菜单
 router.afterEach((to, from, failure) => {
-  current.value = [to.path]
+  // 获取当前路由路径
+  let currentPath = to.path
+
+  // 处理我的空间和团队空间的路由匹配
+  if (currentPath.startsWith('/space/')) {
+    current.value = ['/my_space'] // 将空间页面映射到我的空间菜单项
+  }
+  // 处理创建团队页面的路由匹配
+  else if (currentPath === '/add_space') {
+    current.value = ['/add_space?type=' + SPACE_TYPE_ENUM.TEAM]
+  } else {
+    current.value = [currentPath]
+  }
 })
 
 // 路由跳转事件
@@ -177,9 +200,16 @@ const doMenuClick = ({ key }: { key: string }) => {
 }
 
 :deep(.ant-menu-item-selected) {
-  background: linear-gradient(135deg, var(--primary-blue) 0%, var(--dark-blue) 100%) !important;
-  color: white !important;
-  box-shadow: 0 4px 12px rgba(24, 144, 255, 0.3) !important;
+  background: linear-gradient(
+    135deg,
+    rgba(59, 130, 246, 0.2) 0%,
+    rgba(147, 51, 234, 0.2) 100%
+  ) !important;
+  color: rgb(59, 130, 246) !important;
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  box-shadow:
+    0 4px 15px rgba(59, 130, 246, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8) !important;
 }
 
 :deep(.ant-menu-item:hover) {
@@ -205,7 +235,7 @@ const doMenuClick = ({ key }: { key: string }) => {
   #globalSider {
     height: calc(100vh - 56px);
   }
-  
+
   :deep(.ant-menu-item) {
     margin: 2px 0 !important;
     height: 36px !important;

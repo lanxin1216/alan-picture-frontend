@@ -11,8 +11,8 @@
               </h2>
             </div>
             <div class="flex justify-center">
-              <a-image 
-                style="max-height: 600px; object-fit: contain" 
+              <a-image
+                style="max-height: 600px; object-fit: contain"
                 :src="picture.previewUrl"
                 class="rounded-lg shadow-lg"
               />
@@ -28,7 +28,7 @@
                 图片信息
               </h2>
             </div>
-            
+
             <div class="space-y-4">
               <!-- 作者信息 -->
               <div class="author-info glass-container rounded-xl p-4">
@@ -88,8 +88,8 @@
               <div class="tags-section">
                 <div class="text-sm text-text-secondary mb-2">标签</div>
                 <div class="flex flex-wrap gap-2">
-                  <a-tag 
-                    v-for="tag in picture.tags" 
+                  <a-tag
+                    v-for="tag in picture.tags"
                     :key="tag"
                     class="!rounded-full !px-3 !py-1 bg-gradient-to-r from-blue-100 to-blue-200 border-blue-300"
                   >
@@ -109,9 +109,9 @@
 
             <!-- 操作按钮 -->
             <div class="action-buttons mt-6 space-y-3">
-              <a-button 
-                v-if="canEdit" 
-                type="default" 
+              <a-button
+                v-if="canEdit"
+                type="default"
                 @click="doEdit"
                 class="w-full !rounded-lg !h-12 selected-bg"
                 size="large"
@@ -121,9 +121,9 @@
                 </template>
                 编辑图片
               </a-button>
-              <a-button 
-                v-if="canDelete" 
-                danger 
+              <a-button
+                v-if="canDelete"
+                danger
                 @click="doDelete"
                 class="w-full !rounded-lg !h-12 selected-bg"
                 size="large"
@@ -133,8 +133,8 @@
                 </template>
                 删除图片
               </a-button>
-              <a-button 
-                type="primary" 
+              <a-button
+                type="primary"
                 @click="doDownload"
                 class="w-full !rounded-lg !h-12 core-btn-primary"
                 size="large"
@@ -144,9 +144,9 @@
                 </template>
                 原图下载
               </a-button>
-              <a-button 
-                type="primary" 
-                ghost 
+              <a-button
+                type="primary"
+                ghost
                 @click="doShare"
                 class="w-full !rounded-lg !h-12 selected-bg"
                 size="large"
@@ -163,7 +163,7 @@
     </div>
   </div>
 
-  <ShareModal ref="shareModalRef" :link="shareLink" />
+  <ShareModal ref="shareModalRef" :link="shareLink" title="分享图片"/>
 </template>
 
 <script setup lang="ts">
@@ -354,11 +354,11 @@ const doShare = (picture: API.PictureVO, e: Event) => {
   .pictureDetailPage {
     padding: 16px;
   }
-  
+
   .grid-cols-1 {
     grid-template-columns: 1fr;
   }
-  
+
   .info-grid {
     grid-template-columns: 1fr;
   }
@@ -368,11 +368,11 @@ const doShare = (picture: API.PictureVO, e: Event) => {
   .pictureDetailPage {
     padding: 12px;
   }
-  
+
   .glass-container {
     padding: 16px !important;
   }
-  
+
   .action-buttons .ant-btn {
     height: 44px !important;
     font-size: 14px;
@@ -383,19 +383,19 @@ const doShare = (picture: API.PictureVO, e: Event) => {
   .pictureDetailPage {
     padding: 8px;
   }
-  
+
   .glass-container {
     padding: 12px !important;
   }
-  
+
   .info-grid {
     gap: 8px;
   }
-  
+
   .info-item {
     padding: 6px 8px;
   }
-  
+
   .action-buttons .ant-btn {
     height: 40px !important;
     font-size: 13px;

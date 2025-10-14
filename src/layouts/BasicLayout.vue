@@ -79,7 +79,6 @@ const showSider = computed(() => {
   background: transparent;
   padding: 16px;
   min-height: calc(100vh - 128px);
-  margin-left: 200px;
   transition: margin-left 0.3s ease;
 }
 
