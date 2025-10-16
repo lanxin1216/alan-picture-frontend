@@ -1,161 +1,118 @@
 <template>
-  <div class="pictureDetailPage min-h-screen bg-gradient-to-br from-blue-50 via-blue-100 to-gray-100 p-6">
-    <div class="max-w-7xl mx-auto">
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+  <div class="pictureDetailPage bg-gradient-to-br from-blue-50 via-blue-100 to-gray-100 py-8">
+    <div class="max-w-7xl px-6">
+      <!-- 主体左右布局 -->
+      <div class="picture-layout">
         <!-- 图片展示区 -->
-        <div class="lg:col-span-2">
-          <div class="glass-container rounded-2xl shadow-xl p-6">
-            <div class="text-center mb-4">
-              <h2 class="text-2xl font-bold bg-gradient-to-r from-primary-blue to-dark-blue bg-clip-text text-transparent">
-                图片预览
-              </h2>
-            </div>
-            <div class="flex justify-center">
-              <a-image
-                style="max-height: 600px; object-fit: contain"
-                :src="picture.previewUrl"
-                class="rounded-lg shadow-lg"
-              />
-            </div>
+        <div class="picture-view">
+          <div class="image-wrapper">
+            <a-image
+              :src="picture.previewUrl"
+              alt="图片预览"
+              class="main-image"
+              style="max-height: 600px; object-fit: contain"
+            />
           </div>
         </div>
 
         <!-- 图片信息区 -->
-        <div class="lg:col-span-1">
-          <div class="glass-container rounded-2xl shadow-xl p-6">
-            <div class="text-center mb-6">
-              <h2 class="text-2xl font-bold bg-gradient-to-r from-primary-blue to-dark-blue bg-clip-text text-transparent">
-                图片信息
-              </h2>
+        <div class="picture-info glass-container">
+          <h3>图片信息</h3>
+
+          <div>
+            <!-- 作者 -->
+            <div class="author-info">
+              <a-avatar :size="48" :src="picture.user?.userAvatar" />
+              <div>
+                <div class="author-name">{{ picture.user?.userName || '匿名用户' }}</div>
+                <div class="author-role">作者</div>
+              </div>
             </div>
+            <a-descriptions bordered :column="2" size="small" class="rounded-lg shadow-sm p-4">
+              <a-descriptions-item label="名称">
+                {{ picture.name ?? '未命名' }}
+              </a-descriptions-item>
 
-            <div class="space-y-4">
-              <!-- 作者信息 -->
-              <div class="author-info glass-container rounded-xl p-4">
-                <div class="flex items-center space-x-3">
-                  <a-avatar :size="40" :src="picture.user?.userAvatar" class="border-2 border-white shadow-sm" />
-                  <div>
-                    <div class="font-semibold text-text-primary">{{ picture.user?.userName }}</div>
-                    <div class="text-sm text-text-secondary">作者</div>
-                  </div>
-                </div>
-              </div>
+              <a-descriptions-item label="分类">
+                {{ picture.category ?? '默认' }}
+              </a-descriptions-item>
 
-              <!-- 基本信息 -->
-              <div class="info-grid grid grid-cols-2 gap-3">
-                <div class="info-item">
-                  <div class="text-sm text-text-secondary">名称</div>
-                  <div class="font-medium text-text-primary">{{ picture.name ?? '未命名' }}</div>
-                </div>
-                <div class="info-item">
-                  <div class="text-sm text-text-secondary">分类</div>
-                  <div class="font-medium text-text-primary">{{ picture.category ?? '默认' }}</div>
-                </div>
-                <div class="info-item">
-                  <div class="text-sm text-text-secondary">格式</div>
-                  <div class="font-medium text-text-primary">{{ picture.picFormat ?? '-' }}</div>
-                </div>
-                <div class="info-item">
-                  <div class="text-sm text-text-secondary">大小</div>
-                  <div class="font-medium text-text-primary">{{ formatSize(picture.picSize) }}</div>
-                </div>
-              </div>
+              <a-descriptions-item label="格式">
+                {{ picture.picFormat ?? '-' }}
+              </a-descriptions-item>
 
-              <!-- 尺寸信息 -->
-              <div class="dimensions-info glass-container rounded-xl p-4">
-                <div class="text-center mb-2">
-                  <div class="text-sm text-text-secondary">图片尺寸</div>
-                </div>
-                <div class="flex justify-between items-center">
-                  <div class="text-center">
-                    <div class="text-lg font-bold text-primary-blue">{{ picture.picWidth ?? '-' }}</div>
-                    <div class="text-xs text-text-secondary">宽度</div>
-                  </div>
-                  <div class="text-text-tertiary">×</div>
-                  <div class="text-center">
-                    <div class="text-lg font-bold text-primary-blue">{{ picture.picHeight ?? '-' }}</div>
-                    <div class="text-xs text-text-secondary">高度</div>
-                  </div>
-                  <div class="text-text-tertiary">=</div>
-                  <div class="text-center">
-                    <div class="text-lg font-bold text-primary-blue">{{ picture.picScale ?? '-' }}</div>
-                    <div class="text-xs text-text-secondary">宽高比</div>
-                  </div>
-                </div>
-              </div>
+              <a-descriptions-item label="大小">
+                {{ formatSize(picture.picSize) }}
+              </a-descriptions-item>
+              <a-descriptions-item label="标签" :span="2">
+                <a-tag
+                  v-for="tag in picture.tags"
+                  :key="tag"
+                  class="!rounded-full !px-3 !py-1 bg-gradient-to-r from-blue-100 to-blue-200 border-blue-300"
+                >
+                  {{ tag }}
+                </a-tag>
+              </a-descriptions-item>
+              <a-descriptions-item label="简介" :span="2">
+                {{ picture.introduction ?? '暂无简介' }}
+              </a-descriptions-item>
+            </a-descriptions>
 
-              <!-- 标签 -->
-              <div class="tags-section">
-                <div class="text-sm text-text-secondary mb-2">标签</div>
-                <div class="flex flex-wrap gap-2">
-                  <a-tag
-                    v-for="tag in picture.tags"
-                    :key="tag"
-                    class="!rounded-full !px-3 !py-1 bg-gradient-to-r from-blue-100 to-blue-200 border-blue-300"
-                  >
-                    {{ tag }}
-                  </a-tag>
+            <!-- 尺寸 -->
+            <div class="dimension-box">
+              <div class="dimension-title">图片尺寸</div>
+              <div class="dimension-values">
+                <div class="dim-item">
+                  <div class="dim-value">{{ picture.picWidth ?? '-' }}</div>
+                  <div class="dim-label">宽度</div>
                 </div>
-              </div>
-
-              <!-- 简介 -->
-              <div class="introduction-section">
-                <div class="text-sm text-text-secondary mb-2">简介</div>
-                <div class="glass-container rounded-xl p-3">
-                  <p class="text-text-primary leading-relaxed">{{ picture.introduction ?? '暂无简介' }}</p>
+                <div class="dim-symbol">×</div>
+                <div class="dim-item">
+                  <div class="dim-value">{{ picture.picHeight ?? '-' }}</div>
+                  <div class="dim-label">高度</div>
+                </div>
+                <div class="dim-symbol">=</div>
+                <div class="dim-item">
+                  <div class="dim-value">{{ picture.picScale ?? '-' }}</div>
+                  <div class="dim-label">宽高比</div>
                 </div>
               </div>
             </div>
 
             <!-- 操作按钮 -->
-            <div class="action-buttons mt-6 space-y-3">
-              <a-button
-                v-if="canEdit"
-                type="default"
-                @click="doEdit"
-                class="w-full !rounded-lg !h-12 selected-bg"
-                size="large"
-              >
-                <template #icon>
-                  <EditOutlined />
-                </template>
-                编辑图片
-              </a-button>
-              <a-button
-                v-if="canDelete"
-                danger
-                @click="doDelete"
-                class="w-full !rounded-lg !h-12 selected-bg"
-                size="large"
-              >
-                <template #icon>
-                  <DeleteOutlined />
-                </template>
-                删除图片
-              </a-button>
-              <a-button
-                type="primary"
-                @click="doDownload"
-                class="w-full !rounded-lg !h-12 core-btn-primary"
-                size="large"
-              >
-                <template #icon>
+            <div class="actions">
+              <a-divider  style="margin: 8px"/>
+              <div class="action-group primary-actions">
+                <a-button
+                  type="primary"
+                  @click="doDownload"
+                  class="custom-btn-dark-style"
+                  size="large"
+                >
                   <DownloadOutlined />
-                </template>
-                原图下载
-              </a-button>
-              <a-button
-                type="primary"
-                ghost
-                @click="doShare"
-                class="w-full !rounded-lg !h-12 selected-bg"
-                size="large"
-              >
-                <template #icon>
-                  <share-alt-outlined />
-                </template>
-                分享图片
-              </a-button>
+                  原图下载
+                </a-button>
+                <a-button type="primary" ghost @click="doShare" size="large">
+                  <ShareAltOutlined />
+                  分享图片
+                </a-button>
+              </div>
+              <div class="action-group secondary-actions">
+                <a-button
+                  v-if="canEdit"
+                  type="default"
+                  @click="doEdit"
+                  class="custom-btn-light-style"
+                  size="large"
+                >
+                  <EditOutlined />
+                  编辑图片
+                </a-button>
+                <a-button v-if="canDelete" danger @click="doDelete" class="action-btn" size="large">
+                  <DeleteOutlined />
+                  删除图片
+                </a-button>
+              </div>
             </div>
           </div>
         </div>
@@ -163,16 +120,20 @@
     </div>
   </div>
 
-  <ShareModal ref="shareModalRef" :link="shareLink" title="分享图片"/>
+  <ShareModal ref="shareModalRef" :link="shareLink" title="分享图片" />
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
-import { deletePictureUsingPost, getPictureVoByIdUsingGet } from '@/api/pictureController.ts'
-import { DeleteOutlined, EditOutlined, DownloadOutlined, ShareAltOutlined} from '@ant-design/icons-vue'
+import { ref, computed, onMounted } from 'vue'
 import { message } from 'ant-design-vue'
+import {
+  DeleteOutlined,
+  EditOutlined,
+  DownloadOutlined,
+  ShareAltOutlined,
+} from '@ant-design/icons-vue'
+import { deletePictureUsingPost, getPictureVoByIdUsingGet } from '@/api/pictureController'
 import { downloadImage, formatSize } from '@/utils'
-import { useLoginUserStore } from '@/stores/useLoginUserStore.ts'
 import router from '@/router'
 import { SPACE_PERMISSION_ENUM } from '@/constants/space.ts'
 import ShareModal from '@/components/ShareModal.vue'
@@ -239,11 +200,10 @@ const doEdit = () => {
     path: '/add_picture',
     query: {
       id: picture.value.id,
-      spaceId: picture.value.spaceId
-    }
+      spaceId: picture.value.spaceId,
+    },
   })
 }
-
 
 /**
  * 删除
@@ -275,7 +235,7 @@ const shareModalRef = ref()
 const shareLink = ref<string>()
 
 // 分享
-const doShare = (picture: API.PictureVO, e: Event) => {
+const doShare = (e: Event) => {
   e.stopPropagation()
   shareLink.value = `${window.location.protocol}//${window.location.host}/picture/${picture.id}`
   if (shareModalRef.value) {
@@ -285,120 +245,134 @@ const doShare = (picture: API.PictureVO, e: Event) => {
 </script>
 
 <style scoped>
-.pictureDetailPage {
-  min-height: 100vh;
+.picture-layout {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1rem;
 }
 
 .glass-container {
-  backdrop-filter: blur(10px);
-  border: 1px solid var(--glass-border);
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(12px);
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
 }
 
+.picture-view {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.main-image {
+  border-radius: 12px;
+  max-width: 100%;
+  height: auto;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* 信息区样式 */
 .author-info {
-  background: linear-gradient(135deg, var(--glass-bg-light) 0%, var(--glass-bg) 100%);
-}
-
-.dimensions-info {
-  background: linear-gradient(135deg, var(--glass-bg-light) 0%, var(--glass-bg) 100%);
-}
-
-.info-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  display: flex;
+  align-items: center;
   gap: 12px;
-}
-
-.info-item {
-  background: var(--glass-bg-light);
-  border-radius: 8px;
-  padding: 8px 12px;
-  border: 1px solid var(--glass-border);
-}
-
-.tags-section .ant-tag {
-  margin: 0;
-}
-
-.introduction-section .glass-container {
-  background: var(--glass-bg-light);
-}
-
-.action-buttons .ant-btn {
-  border-radius: 8px;
-  font-weight: 500;
-  transition: all 0.3s ease;
-}
-
-.action-buttons .ant-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-/* 自定义图片样式 */
-:deep(.ant-image) {
+  background: rgba(255, 255, 255, 0.7);
   border-radius: 12px;
-  overflow: hidden;
+  padding: 12px;
 }
 
-:deep(.ant-image-img) {
+.author-name {
+  font-weight: 600;
+  color: #333;
+}
+
+.author-role {
+  font-size: 13px;
+  color: #888;
+}
+
+/* 操作按钮 */
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 0 16px;
+}
+
+.action-group {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.primary-actions {
+  order: 1;
+}
+
+.secondary-actions {
+  order: 2;
+}
+
+.action-group > .ant-btn {
+  flex: 1;
+  min-width: 120px;
+}
+
+/* 尺寸信息 */
+.dimension-box {
+  background: rgba(255, 255, 255, 0.7);
   border-radius: 12px;
+  padding: 12px;
+  text-align: center;
 }
 
-:deep(.ant-avatar) {
-  border: 2px solid white;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+.dimension-title {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 6px;
 }
 
-/* 响应式设计 */
+.dimension-values {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.dim-item {
+  text-align: center;
+}
+
+.dim-value {
+  color: #1677ff;
+  font-weight: 600;
+}
+
+.dim-label {
+  font-size: 12px;
+  color: #777;
+}
+
+.dim-symbol {
+  color: #999;
+  font-weight: bold;
+}
+
+/* 响应式 */
 @media (max-width: 1024px) {
-  .pictureDetailPage {
-    padding: 16px;
-  }
-
-  .grid-cols-1 {
-    grid-template-columns: 1fr;
-  }
-
-  .info-grid {
+  .picture-layout {
     grid-template-columns: 1fr;
   }
 }
 
 @media (max-width: 768px) {
-  .pictureDetailPage {
-    padding: 12px;
+  .action-group {
+    flex-direction: column;
   }
 
-  .glass-container {
-    padding: 16px !important;
-  }
-
-  .action-buttons .ant-btn {
-    height: 44px !important;
-    font-size: 14px;
-  }
-}
-
-@media (max-width: 480px) {
-  .pictureDetailPage {
-    padding: 8px;
-  }
-
-  .glass-container {
-    padding: 12px !important;
-  }
-
-  .info-grid {
-    gap: 8px;
-  }
-
-  .info-item {
-    padding: 6px 8px;
-  }
-
-  .action-buttons .ant-btn {
-    height: 40px !important;
-    font-size: 13px;
+  .action-group > .ant-btn {
+    width: 100%;
   }
 }
 </style>
