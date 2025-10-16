@@ -7,9 +7,8 @@
         v-model:value="searchParams.searchText"
         enter-button="搜索"
         size="large"
-        class="w-full"
-        @search="doSearch"
-      />
+        class="w-full custom-search-input"
+        @search="doSearch"/>
     </div>
 
     <!-- 分类 + 标签 -->
@@ -157,6 +156,20 @@ const getTagCategoryOptions = async () => {
 .search-bar {
   max-width: 600px;
   margin: 0 auto;
+}
+
+/* 自定义搜索框样式 */
+:deep(.custom-search-input .ant-input-search-button) {
+  border: none !important;
+  background: var(--core-btn-light-bg)!important;
+  color: var(--core-btn-light-text)!important;
+  box-shadow: var(--core-btn-light-shadow)!important;
+}
+
+:deep(.custom-search-input .ant-input-search-button:hover) {
+  background: var(--core-btn-light-hover)!important;
+  color: var(--core-btn-light-text)!important;
+  box-shadow: var(--core-btn-light-shadow)!important;
 }
 
 .tag-bar {

@@ -82,14 +82,14 @@ body {
 /* ===== 自定义按键配色 ===== */
 /* 1、浅色按钮样式 */
 .custom-btn-light-style {
-  background: var(--selected-bg-gradient);
-  color: var(--selected-text-color);
+  background: var(--core-btn-light-bg);
+  color: var(--core-btn-light-text);
   border: 1px solid var(--selected-border-color);
   box-shadow: var(--core-btn-light-shadow);
 }
 .custom-btn-light-style:hover {
   background: var(--core-btn-light-hover);
-  color: var(--selected-text-color);
+  color: var(--core-btn-light-text);
   transform: translateY(-1px);
   box-shadow: var(--core-btn-light-shadow);
 }

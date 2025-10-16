@@ -23,10 +23,10 @@
     </a-row>
     <div style="margin-bottom: 16px" />
     <a-flex gap="16" justify="center">
-      <a-button type="primary" :loading="inProduction" ghost @click="createTask">
+      <a-button type="primary" class="custom-btn-light-style" :loading="inProduction" ghost @click="createTask">
         生成图片</a-button
       >
-      <a-button type="primary" v-if="resultImageUrl" :loading="uploadLoading" @click="handleUpload">
+      <a-button type="primary" class="custom-btn-dark-style" v-if="resultImageUrl" :loading="uploadLoading" @click="handleUpload">
         应用结果
       </a-button>
     </a-flex>
