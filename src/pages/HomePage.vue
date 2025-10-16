@@ -1,7 +1,7 @@
 <template>
   <div id="homepage" class="space-y-6">
     <!-- 搜索框 -->
-    <div class="search-bar glass-container p-6 rounded-xl">
+    <div class="search-bar glass-container">
       <a-input-search
         placeholder="从图库中搜索"
         v-model:value="searchParams.searchText"
@@ -13,20 +13,20 @@
     </div>
 
     <!-- 分类 + 标签 -->
-    <div class="glass-container p-6 rounded-xl">
+    <div>
       <a-tabs v-model:activeKey="selectedCategory" @change="doSearch" class="mb-4">
         <a-tab-pane key="all" tab="全部" />
         <a-tab-pane v-for="category in categoryList" :key="category" :tab="category" />
       </a-tabs>
-      
+
       <div class="tag-bar">
-        <span class="text-text-primary font-medium mr-3">标签：</span>
+        <span class="text-text-secondary font-medium mr-3">标签：</span>
         <a-space :size="[8, 8]" wrap>
           <a-checkable-tag
             v-for="(tag, index) in tagList"
             :key="tag"
             v-model:checked="selectedTagList[index]"
-            class="glass-container !border !border-glass-border !rounded-lg !px-3 !py-1 transition-all duration-300 hover:scale-105"
+            class=" transition-all duration-300 hover:scale-105"
             @change="doSearch"
           >
             {{ tag }}
@@ -36,12 +36,12 @@
     </div>
 
     <!-- 图片列表 -->
-    <div class="glass-container p-6 rounded-xl">
+    <div class="p-6 rounded-xl">
       <PictureList :dataList="dataList" :loading="loading" />
     </div>
 
     <!-- 分页 -->
-    <div class="glass-container p-4 rounded-xl flex justify-center">
+    <div class="p-4 rounded-xl flex justify-center">
       <a-pagination
         v-model:current="searchParams.current"
         v-model:pageSize="searchParams.pageSize"
@@ -160,7 +160,7 @@ const getTagCategoryOptions = async () => {
 }
 
 .tag-bar {
-  margin-bottom: 0;
+  margin-bottom: 16px;
 }
 
 /* 自定义标签样式 */
@@ -173,7 +173,6 @@ const getTagCategoryOptions = async () => {
 }
 
 :deep(.ant-checkable-tag-checked) {
-  background: var(--selected-bg) !important;
   color: var(--text-primary) !important;
   border-color: var(--primary-blue) !important;
   box-shadow: 0 4px 12px rgba(24, 144, 255, 0.2) !important;
@@ -192,7 +191,6 @@ const getTagCategoryOptions = async () => {
 }
 
 :deep(.custom-pagination .ant-pagination-item-active) {
-  background: var(--selected-bg) !important;
   border-color: var(--primary-blue) !important;
 }
 
@@ -216,12 +214,12 @@ const getTagCategoryOptions = async () => {
     max-width: 100%;
     padding: 16px !important;
   }
-  
+
   .tag-bar {
     flex-direction: column;
     align-items: flex-start;
   }
-  
+
   :deep(.ant-space) {
     width: 100%;
     justify-content: flex-start;
@@ -232,7 +230,7 @@ const getTagCategoryOptions = async () => {
   #homepage {
     padding: 8px;
   }
-  
+
   .glass-container {
     padding: 12px !important;
   }

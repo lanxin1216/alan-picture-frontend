@@ -16,7 +16,7 @@
 
         <!-- 可滚动内容区域 -->
         <a-layout-content class="overflow-auto" :class="{ 'ml-0': !showSider, 'ml-48': showSider }">
-          <div class="layout-glass-container">
+          <div class="layout-glass-container main-content">
             <router-view />
           </div>
 
@@ -67,6 +67,10 @@ const showSider = computed(() => {
   border: 1px solid var(--glass-border);
   border-radius: 12px;
   box-shadow: var(--glass-shadow);
+}
+
+.main-content {
+  padding: 8px;
 }
 
 #basicLayout :deep(.ant-layout) {
