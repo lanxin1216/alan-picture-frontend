@@ -99,11 +99,6 @@ const originItems = [
     label: '关于',
     title: '关于',
   },
-  {
-    key: 'others',
-    label: h('a', { href: 'https://blog.alank.top/', target: '_blank' }, '博客'),
-    title: '博客',
-  },
 ]
 
 const router = useRouter()
