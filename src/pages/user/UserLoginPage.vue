@@ -1,77 +1,86 @@
 <template>
-  <div id="userLoginPage" class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-blue-100 to-gray-100 p-4">
-    <div class="login-container glass-container rounded-2xl shadow-xl max-w-md w-full">
-      <!-- Logo和标题 -->
-      <div class="text-center mb-8">
-        <div class="flex justify-center mb-4">
-          <img alt="logo" class="w-16 h-16 rounded-xl" src="@/assets/logo.png" />
-        </div>
-        <h2 class="title text-3xl font-bold bg-gradient-to-r from-primary-blue to-dark-blue bg-clip-text text-transparent mb-2">
-          屿图 - 用户登录
-        </h2>
-        <div class="desc text-text-secondary text-sm">—— 发现与分享你的光影岛屿 ——</div>
-      </div>
+  <div id="userLoginPage" class="flex items-center">
+    <!-- 左侧Logo区域 -->
+    <div class="text-center logo">
+      <img alt="logo" class="w-12 h-12 rounded-xl" src="@/assets/logo.png" />
+      <div class="desc text-gray-600">—— 屿图 · 发现与分享你的光影岛屿 ——</div>
+    </div>
 
-      <!-- 登录表单 -->
-      <a-form :model="formState" name="basic" autocomplete="off" @finish="handleSubmit" class="space-y-4">
-        <a-form-item
-          name="email"
-          :rules="[
-            { required: true, message: '请输入登录邮箱' },
-          ]"
-          class="!mb-4"
+    <!-- 右侧登录表单 -->
+    <div class="flex-1 flex justify-center">
+      <div
+        class="glass-form-container w-full p-10 rounded-2xl transition-all duration-300 hover:shadow-lg"
+      >
+        <h3 class="text-2xl font-semibold text-gray-800 mb-8 text-center">用户登录</h3>
+
+        <a-form
+          :model="formState"
+          name="basic"
+          autocomplete="off"
+          @finish="handleSubmit"
+          class="space-y-6"
         >
-          <a-input 
-            v-model:value="formState.email" 
-            placeholder="请输入登录邮箱" 
-            size="large"
-            class="!rounded-lg !h-12"
+          <!-- 邮箱输入 -->
+          <a-form-item
+            name="email"
+            :rules="[{ required: true, message: '请输入登录邮箱' }]"
+            class="!mb-0"
           >
-            <template #prefix>
-              <UserOutlined class="text-text-tertiary" />
-            </template>
-          </a-input>
-        </a-form-item>
-        
-        <a-form-item
-          name="userPassword"
-          :rules="[
-            { required: true, message: '请输入密码' },
-            { min: 8, message: '密码不能小于 8 位' },
-          ]"
-          class="!mb-4"
-        >
-          <a-input-password 
-            v-model:value="formState.userPassword" 
-            placeholder="请输入密码" 
-            size="large"
-            class="!rounded-lg !h-12"
+            <a-input
+              v-model:value="formState.email"
+              placeholder="请输入登录邮箱"
+              size="large"
+              class="glass-input !rounded-xl !h-12"
+            >
+              <template #prefix>
+                <UserOutlined class="text-gray-400" />
+              </template>
+            </a-input>
+          </a-form-item>
+
+          <!-- 密码输入 -->
+          <a-form-item
+            name="userPassword"
+            :rules="[
+              { required: true, message: '请输入密码' },
+              { min: 8, message: '密码不能小于 8 位' },
+            ]"
+            class="!mb-0"
           >
-            <template #prefix>
-              <LockOutlined class="text-text-tertiary" />
-            </template>
-          </a-input-password>
-        </a-form-item>
-        
-        <div class="tips text-center text-text-secondary text-sm mb-4">
-          没有账号？
-          <RouterLink to="/user/register" class="text-primary-blue hover:underline font-medium">
-            去注册
-          </RouterLink>
-        </div>
-        
-        <a-form-item class="!mb-0">
-          <a-button 
-            type="primary" 
-            html-type="submit" 
-            size="large"
-            class="w-full !rounded-lg !h-12 text-lg font-medium core-btn-primary transition-all duration-300 hover:scale-105"
-            :loading="loading"
-          >
-            登录
-          </a-button>
-        </a-form-item>
-      </a-form>
+            <a-input-password
+              v-model:value="formState.userPassword"
+              placeholder="请输入密码"
+              size="large"
+              class="glass-input !rounded-xl !h-12"
+            >
+              <template #prefix>
+                <LockOutlined class="text-gray-400" />
+              </template>
+            </a-input-password>
+          </a-form-item>
+
+          <!-- 注册提示 -->
+          <div class="text-center text-gray-500 text-sm">
+            没有账号？
+            <RouterLink to="/user/register" class="text-primary-blue hover:underline font-medium">
+              去注册
+            </RouterLink>
+          </div>
+
+          <!-- 登录按钮 -->
+          <a-form-item class="!mb-0">
+            <a-button
+              type="primary"
+              html-type="submit"
+              size="large"
+              class="w-full custom-btn-dark-style !rounded-xl !h-12 font-medium"
+              :loading="loading"
+            >
+              登录
+            </a-button>
+          </a-form-item>
+        </a-form>
+      </div>
     </div>
   </div>
 </template>
@@ -93,22 +102,14 @@ const loading = ref(false)
 const router = useRouter()
 const loginUserStore = useLoginUserStore()
 
-/**
- * 提交表单
- * @param values
- */
 const handleSubmit = async (values: any) => {
   loading.value = true
   try {
     const res = await userLoginUsingPost(values)
-    // 登录成功，把登录态保存到全局状态中
     if (res.data.code === 0 && res.data.data) {
       await loginUserStore.fetchLoginUser()
       message.success('登录成功')
-      router.push({
-        path: '/',
-        replace: true,
-      })
+      router.push({ path: '/', replace: true })
     } else {
       message.error('登录失败，' + res.data.message)
     }
@@ -121,107 +122,37 @@ const handleSubmit = async (values: any) => {
 </script>
 
 <style scoped>
-#userLoginPage {
-  min-height: 100vh;
-}
-
-.login-container {
-  padding: 40px 32px;
+.glass-form-container {
+  width: 40%;
+  background: transparent;
   backdrop-filter: blur(10px);
-  border: 1px solid var(--glass-border);
+  -webkit-backdrop-filter: blur(15px);
+  border: var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  transition: all 0.3s ease;
+  border-radius: 24px;
+  padding: 24px;
 }
 
-.title {
-  text-align: center;
-  font-weight: bold;
+.glass-form-container:hover {
+  transform: translateY(-5px);
+  border-color: rgba(255, 255, 255, 0.6);
 }
 
-.desc {
-  text-align: center;
-  margin-bottom: 0;
+.space-y-6 > * + * {
+  margin-top: 1.5rem;
 }
 
-.tips {
-  margin-bottom: 0;
-  text-align: center;
-}
-
-/* 自定义表单样式 */
-:deep(.ant-form-item) {
-  margin-bottom: 16px;
-}
-
-:deep(.ant-input),
-:deep(.ant-input-password) {
-  border-radius: 8px !important;
-  border: 1px solid var(--glass-border) !important;
-  background: var(--glass-bg-light) !important;
-  backdrop-filter: blur(5px) !important;
-  padding: 12px !important;
-}
-
-:deep(.ant-input:focus),
-:deep(.ant-input-password:focus) {
-  border-color: var(--primary-blue) !important;
-  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2) !important;
-}
-
-:deep(.ant-input-password .ant-input) {
-  background: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-  padding: 0 !important;
-}
-
-:deep(.ant-btn) {
-  border-radius: 8px !important;
-  border: none !important;
-  height: 48px !important;
-  font-size: 16px !important;
-  font-weight: 500 !important;
-}
-
-/* 核心按钮样式 */
-.core-btn-primary {
-  background: var(--core-btn-gradient) !important;
-  border: none !important;
-  box-shadow: var(--core-btn-shadow) !important;
-  color: white !important;
-}
-
-.core-btn-primary:hover {
-  background: var(--core-btn-gradient-hover) !important;
-  transform: translateY(-1px) !important;
-  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4) !important;
-}
-
-/* 选中效果样式 */
-.selected-effect {
-  background: var(--selected-bg-gradient) !important;
-  color: var(--selected-text-color) !important;
-  border: 1px solid var(--selected-border-color) !important;
-  box-shadow: var(--selected-shadow) !important;
-}
-
-/* 响应式设计 */
-@media (max-width: 480px) {
-  .login-container {
-    padding: 32px 24px;
-    margin: 0 16px;
+@media (max-width: 768px) {
+  #userLoginPage {
+    flex-direction: column;
+    padding: 2rem;
   }
-  
-  .title {
-    font-size: 24px;
-  }
-  
-  :deep(.ant-input),
-  :deep(.ant-input-password) {
-    padding: 10px !important;
-  }
-  
-  :deep(.ant-btn) {
-    height: 44px !important;
-    font-size: 15px !important;
+
+  .glass-form-container {
+    width: 100%;
+    max-width: 400px;
+    padding: 2rem !important;
   }
 }
 </style>
