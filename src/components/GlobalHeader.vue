@@ -216,7 +216,7 @@ const doLogout = async () => {
 }
 
 :deep(.glass-menu .ant-menu-item:hover) {
-  background: rgba(255, 255, 255, 0.8) !important;
+  background: rgba(255, 255, 255, 0.5) !important;
   color: rgb(59, 130, 246) !important;
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);

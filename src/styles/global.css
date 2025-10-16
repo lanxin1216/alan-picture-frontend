@@ -8,12 +8,23 @@
   --primary-blue-hover: #2563eb;
   --light-blue: #e6f7ff;
   --dark-blue: #9333ea;
-  
+
   /* 按钮配色系统 */
   --core-btn-gradient: linear-gradient(135deg, rgba(59, 130, 246, 0.9) 0%, rgba(147, 51, 234, 0.9) 100%);
   --core-btn-gradient-hover: linear-gradient(135deg, rgba(59, 130, 246, 1) 0%, rgba(147, 51, 234, 1) 100%);
   --core-btn-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
-  
+  /* 1. 深色主按钮 */
+  --core-btn-dark-bg: linear-gradient(135deg, rgba(59, 130, 246, 0.9) 0%, rgba(147, 51, 234, 0.9) 100%);
+  --core-btn-dark-hover: linear-gradient(135deg, rgba(59, 130, 246, 1) 0%, rgba(147, 51, 234, 1) 100%);
+  --core-btn-dark-text: #ffffff;
+  --core-btn-dark-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+  /* 2. 浅色主按钮 */
+  --core-btn-light-bg: linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(147, 51, 234, 0.2) 100%);
+  --core-btn-light-hover: linear-gradient(135deg, rgba(59, 130, 246, 0.3) 0%, rgba(147, 51, 234, 0.2) 100%);
+  --core-btn-light-text: rgb(59, 130, 246);
+  --core-btn-light-shadow: 0 4px 15px rgba(59, 130, 246, 0.15);
+
+  /* 3. 选中配色 */
   --selected-bg-gradient: linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(147, 51, 234, 0.2) 100%);
   --selected-text-color: rgb(59, 130, 246);
   --selected-border-color: rgba(59, 130, 246, 0.2);
@@ -66,6 +77,32 @@ body {
   border: 1px solid var(--glass-border);
   border-radius: 12px;
   box-shadow: var(--glass-shadow);
+}
+
+/* ===== 自定义按键配色 ===== */
+/* 1、浅色按钮样式 */
+.custom-btn-light-style {
+  background: var(--selected-bg-gradient);
+  color: var(--selected-text-color);
+  border: 1px solid var(--selected-border-color);
+  box-shadow: var(--core-btn-light-shadow);
+}
+.custom-btn-light-style:hover {
+  background: var(--core-btn-light-hover);
+  color: var(--selected-text-color);
+  transform: translateY(-1px);
+  box-shadow: var(--core-btn-light-shadow);
+}
+/* 2、深色按钮样式 */
+.custom-btn-dark-style {
+  background: var(--core-btn-dark-bg);
+  border: none;
+  box-shadow: var(--core-btn-dark-shadow);
+}
+.custom-btn-dark-style:hover {
+  background: var(--core-btn-dark-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--core-btn-dark-shadow);
 }
 
 /* 重置Ant Design基础样式 */
@@ -125,18 +162,6 @@ body {
 .ant-btn {
   border-radius: 8px;
   border: 1px solid var(--glass-border);
-}
-
-.ant-btn-primary {
-  background: var(--core-btn-gradient);
-  border: none;
-  box-shadow: var(--core-btn-shadow);
-}
-
-.ant-btn-primary:hover {
-  background: var(--core-btn-gradient-hover);
-  transform: translateY(-1px);
-  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
 }
 
 .ant-card {

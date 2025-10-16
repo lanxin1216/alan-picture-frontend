@@ -1,17 +1,22 @@
 <template>
-  <div id="addPicturePage" class="max-w-4xl mx-auto space-y-6">
+  <div id="addPicturePage" class="max-w-4xl space-y-6">
     <!-- 标题区域 -->
-    <div class="glass-container p-6 rounded-xl">
+    <div class="p-6 rounded-xl">
       <h2 class="text-2xl font-bold text-text-primary mb-2">
-        {{ route.query?.id ? '修改图片' : '创建图片' }}
+        {{ route.query?.id ? '修改图片' : '上传图片' }}
       </h2>
       <a-typography-paragraph v-if="spaceId" type="secondary" class="!mb-0">
-        保存至空间：<a :href="`/space/${spaceId}`" target="_blank" class="text-primary-blue hover:underline">{{ spaceId }}</a>
+        保存至空间：<a
+          :href="`/space/${spaceId}`"
+          target="_blank"
+          class="text-primary-blue hover:underline"
+          >{{ spaceId }}</a
+        >
       </a-typography-paragraph>
     </div>
 
     <!-- 上传方式选择 -->
-    <div class="glass-container p-6 rounded-xl">
+    <div class="rounded-xl">
       <a-tabs v-model:activeKey="uploadType" class="custom-tabs">
         <a-tab-pane key="file" tab="文件上传">
           <PictureUpload :picture="picture" :spaceId="spaceId" :onSuccess="onSuccess" />
@@ -23,22 +28,21 @@
     </div>
 
     <!-- 图片编辑区域 -->
-    <div v-if="picture" class="glass-container p-6 rounded-xl text-center">
+    <div v-if="picture" class="p-6 rounded-xl text-center">
       <div class="edit-bar">
         <a-space size="middle">
-          <a-button 
-            :icon="h(EditOutlined)" 
+          <a-button
+            :icon="h(EditOutlined)"
             @click="doEditPicture"
-            class="glass-container !border !border-glass-border !rounded-lg"
+            class="custom-btn-light-style !border !border-glass-border !rounded-lg"
           >
             编辑图片
           </a-button>
-          <a-button 
-            type="primary" 
-            ghost 
-            :icon="h(FullscreenOutlined)" 
+          <a-button
+            type="primary"
+            :icon="h(FullscreenOutlined)"
             @click="doImagePainting"
-            class="!rounded-lg core-btn-primary"
+            class="!rounded-lg custom-btn-dark-style"
           >
             AI 扩图
           </a-button>
@@ -61,14 +65,10 @@
     </div>
 
     <!-- 图片信息表单 -->
-    <div v-if="picture" class="glass-container p-6 rounded-xl">
-      <a-form layout="vertical" :model="pictureForm" @finish="handleSubmit" class="space-y-4">
+    <div v-if="picture">
+      <a-form layout="vertical" :model="pictureForm" @finish="handleSubmit">
         <a-form-item label="名称" name="name" class="!mb-4">
-          <a-input 
-            v-model:value="pictureForm.name" 
-            placeholder="请输入名称" 
-            class="!rounded-lg"
-          />
+          <a-input v-model:value="pictureForm.name" placeholder="请输入名称" class="!rounded-lg" />
         </a-form-item>
         <a-form-item label="简介" name="introduction" class="!mb-4">
           <a-textarea
@@ -102,12 +102,8 @@
 
         <!-- 提交按钮 -->
         <a-form-item class="!mb-0">
-          <a-button 
-            type="primary" 
-            html-type="submit" 
-            class="w-full !rounded-lg !h-12 text-lg font-medium core-btn-primary"
-          >
-            {{ route.query?.id ? '修改' : '创建' }}
+          <a-button type="primary" html-type="submit" class=" w-full !rounded-lg custom-btn-dark-style">
+            {{ route.query?.id ? '修改' : '保存' }}
           </a-button>
         </a-form-item>
       </a-form>
@@ -302,13 +298,11 @@ watchEffect(() => {
 /* 自定义标签样式 */
 :deep(.custom-tabs .ant-tabs-tab) {
   border-radius: 8px 8px 0 0 !important;
-  background: var(--glass-bg-light) !important;
   border: 1px solid var(--glass-border) !important;
   margin-right: 8px !important;
 }
 
 :deep(.custom-tabs .ant-tabs-tab-active) {
-  background: var(--selected-bg) !important;
   color: var(--text-primary) !important;
 }
 
@@ -333,7 +327,7 @@ watchEffect(() => {
 :deep(.ant-input-number) {
   border-radius: 8px !important;
   border: 1px solid var(--glass-border) !important;
-  background: var(--glass-bg-light) !important;
+  background: var(--glass-border) !important;
   backdrop-filter: blur(5px) !important;
 }
 
@@ -351,7 +345,7 @@ watchEffect(() => {
     padding: 16px;
     max-width: 100%;
   }
-  
+
   .glass-container {
     padding: 16px !important;
   }
@@ -361,7 +355,7 @@ watchEffect(() => {
   #addPicturePage {
     padding: 12px;
   }
-  
+
   .glass-container {
     padding: 12px !important;
   }
