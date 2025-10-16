@@ -10,18 +10,18 @@
       </a-layout-header>
 
       <!-- 主要内容区域 -->
-      <a-layout class="pt-[64px]">
+      <a-layout class="pt-[64px] flex flex-1 flex-co">
         <!-- 固定侧边栏 -->
         <GlobalSider v-if="showSider" class="fixed left-0 bottom-0 z-40" />
 
         <!-- 可滚动内容区域 -->
-        <a-layout-content class="overflow-auto" :class="{ 'ml-0': !showSider, 'ml-48': showSider }">
-          <div class="layout-glass-container main-content">
-            <router-view />
+        <a-layout-content class="flex flex-col flex-1 overflow-auto" :class="{ 'ml-0': !showSider, 'ml-48': showSider }">
+          <div class="layout-glass-container main-content flex flex-col flex-1">
+            <router-view class="flex-1" />
           </div>
 
           <!-- 固定底部 -->
-          <a-layout-footer class="footer layout-glass-container">
+          <a-layout-footer class="footer layout-glass-container mt-auto">
             <a
               href="https://github.com/lanxin1216"
               target="_blank"
