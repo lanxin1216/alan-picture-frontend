@@ -1,16 +1,16 @@
 <template>
   <div id="pictureManagePage">
     <!-- 标题 -->
-    <a-flex justify="space-between">
+    <a-flex justify="space-between" style="padding: 4px 16px">
       <h2>图片管理</h2>
       <a-space>
-        <a-button type="primary" href="/add_picture" target="_blank" class="core-btn-primary">+ 创建图片</a-button>
-        <a-button type="primary" href="/add_picture/batch" target="_blank" ghost class="selected-bg">+ 批量创建图片</a-button>
+        <a-button type="primary" href="/add_picture" target="_blank" class="custom-btn-dark-style">+ 创建图片</a-button>
+        <a-button type="primary" href="/add_picture/batch" target="_blank" ghost class="custom-btn-light-style">+ 批量创建图片</a-button>
       </a-space>
     </a-flex>
 
     <!-- 搜索表单 -->
-    <a-form layout="inline" :model="searchParams" @finish="doSearch">
+    <a-form layout="inline" :model="searchParams" @finish="doSearch" style="margin: 8px 24px">
       <a-form-item label="关键词" name="searchText">
         <a-input
           v-model:value="searchParams.searchText"
@@ -40,7 +40,7 @@
         />
       </a-form-item>
       <a-form-item>
-        <a-button type="primary" html-type="submit" class="core-btn-primary">搜索</a-button>
+        <a-button html-type="submit" class="custom-btn-light-style">搜索</a-button>
       </a-form-item>
     </a-form>
 
@@ -56,7 +56,7 @@
       <template #bodyCell="{ column, record }">
         <!-- 图片 -->
         <template v-if="column.dataIndex === 'url'">
-          <a-image :src="record.url" :width="120" />
+          <a-image :src="record.url" :width="150" :height="150" />
         </template>
         <!-- 标签 -->
         <template v-if="column.dataIndex === 'tags'">
@@ -139,6 +139,7 @@ const columns = [
   {
     title: '图片',
     dataIndex: 'url',
+    width: 200,
   },
   {
     title: '名称',

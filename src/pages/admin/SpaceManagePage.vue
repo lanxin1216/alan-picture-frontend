@@ -1,21 +1,35 @@
 <template>
   <div id="spaceManagePage">
     <!-- 标题 -->
-    <a-flex justify="space-between">
+    <a-flex justify="space-between" style="padding: 4px 16px">
       <h2>空间管理</h2>
       <a-space>
-        <a-button type="primary" href="/add_space" target="_blank" class="core-btn-primary">+ 创建空间</a-button>
-        <a-button type="primary" ghost href="/space_analyze?queryPublic=1" target="_blank" class="selected-bg">
+        <a-button type="primary" href="/add_space" target="_blank" class="custom-btn-dark-style"
+          >+ 创建空间</a-button
+        >
+        <a-button
+          type="primary"
+          ghost
+          href="/space_analyze?queryPublic=1"
+          target="_blank"
+          class="custom-btn-light-style"
+        >
           分析公共图库
         </a-button>
-        <a-button type="primary" ghost href="/space_analyze?queryAll=1" target="_blank" class="selected-bg">
+        <a-button
+          type="primary"
+          ghost
+          href="/space_analyze?queryAll=1"
+          target="_blank"
+          class="custom-btn-light-style"
+        >
           分析全空间
         </a-button>
       </a-space>
     </a-flex>
 
     <!-- 搜索表单 -->
-    <a-form layout="inline" :model="searchParams" @finish="doSearch">
+    <a-form layout="inline" :model="searchParams" @finish="doSearch" style="margin: 8px 24px">
       <a-form-item label="空间名称" name="spaceName">
         <a-input v-model:value="searchParams.spaceName" placeholder="请输入空间名称" allow-clear />
       </a-form-item>
@@ -41,7 +55,7 @@
         <a-input v-model:value="searchParams.userId" placeholder="请输入用户 id" allow-clear />
       </a-form-item>
       <a-form-item>
-        <a-button type="primary" html-type="submit" class="core-btn-primary">搜索</a-button>
+        <a-button html-type="submit" class="custom-btn-light-style">搜索</a-button>
       </a-form-item>
     </a-form>
 
@@ -95,7 +109,12 @@ import { computed, onMounted, reactive, ref } from 'vue'
 import { deleteSpaceUsingPost, listSpaceByPageUsingPost } from '@/api/spaceController.ts'
 import { message } from 'ant-design-vue'
 import dayjs from 'dayjs'
-import { SPACE_LEVEL_MAP, SPACE_LEVEL_OPTIONS, SPACE_TYPE_MAP, SPACE_TYPE_OPTIONS } from '@/constants/space.ts'
+import {
+  SPACE_LEVEL_MAP,
+  SPACE_LEVEL_OPTIONS,
+  SPACE_TYPE_MAP,
+  SPACE_TYPE_OPTIONS,
+} from '@/constants/space.ts'
 import { formatSize } from '@/utils'
 
 const columns = [

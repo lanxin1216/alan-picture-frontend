@@ -1,26 +1,26 @@
 <template>
   <div id="spaceManagePage">
     <!-- 标题 -->
-    <a-flex justify="space-between">
+    <a-flex justify="space-between" style="padding: 4px 16px">
       <h2>空间成员管理</h2>
       <a-space>
-        <a-button type="primary" href="/add_space" target="_blank" class="core-btn-primary">+ 创建空间</a-button>
-        <a-button type="primary" ghost href="/space_analyze?queryPublic=1" target="_blank" class="selected-bg">
+        <a-button type="primary" href="/add_space" target="_blank" class="custom-btn-dark-style">+ 创建空间</a-button>
+        <a-button type="primary" ghost href="/space_analyze?queryPublic=1" target="_blank" class="custom-btn-light-style">
           分析公共图库
         </a-button>
-        <a-button type="primary" ghost href="/space_analyze?queryAll=1" target="_blank" class="selected-bg">
+        <a-button type="primary" ghost href="/space_analyze?queryAll=1" target="_blank" class="custom-btn-light-style">
           分析全空间
         </a-button>
       </a-space>
     </a-flex>
 
     <!-- 添加成员表单 -->
-    <a-form layout="inline" :model="formData" @finish="handleSubmit">
+    <a-form layout="inline" :model="formData" @finish="handleSubmit" style="margin: 8px 24px">
       <a-form-item label="用户 id" name="userId">
         <a-input v-model:value="formData.userId" placeholder="请输入用户 id" allow-clear />
       </a-form-item>
       <a-form-item>
-        <a-button type="primary" html-type="submit" class="core-btn-primary">添加用户</a-button>
+        <a-button type="primary" html-type="submit" class="custom-btn-dark-style">添加用户</a-button>
       </a-form-item>
     </a-form>
 

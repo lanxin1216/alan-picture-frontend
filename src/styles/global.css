@@ -138,15 +138,6 @@ body {
   background: rgba(24, 144, 255, 0.1) !important;
 }
 
-.ant-tabs-tab {
-  border-radius: 8px 8px 0 0;
-}
-
-.ant-tabs-tab-active {
-  background: var(--glass-bg-light);
-  backdrop-filter: blur(10px);
-}
-
 .ant-input, .ant-input-search {
   border-radius: 8px;
   border: 1px solid var(--glass-border);

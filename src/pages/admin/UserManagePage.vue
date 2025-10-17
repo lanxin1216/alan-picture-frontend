@@ -1,93 +1,71 @@
 <template>
-  <div id="userManagePage" class="min-h-screen bg-gradient-to-br from-blue-50 via-blue-100 to-gray-100 p-6">
-    <div class="glass-container rounded-2xl shadow-xl p-6">
-      <!-- 页面标题 -->
-      <div class="text-center mb-8">
-        <h1 class="text-3xl font-bold bg-gradient-to-r from-primary-blue to-dark-blue bg-clip-text text-transparent">
-          用户管理
-        </h1>
-        <p class="text-text-secondary mt-2">管理系统用户账号和权限</p>
-      </div>
+  <div id="userManagePage">
+    <!-- 搜索区域 -->
+    <div class="search-area">
+      <a-form layout="inline" :model="searchParams" @finish="doSearch" class="search-form">
+        <a-form-item label="账号" class="!mb-4">
+          <a-input
+            v-model:value="searchParams.userAccount"
+            placeholder="输入账号"
+            allow-clear
+            class="!rounded-lg !h-10"
+          >
+            <template #prefix>
+              <UserOutlined class="text-text-tertiary" />
+            </template>
+          </a-input>
+        </a-form-item>
+        <a-form-item label="用户名" class="!mb-4">
+          <a-input
+            v-model:value="searchParams.userName"
+            placeholder="输入用户名"
+            allow-clear
+            class="!rounded-lg !h-10"
+          >
+            <template #prefix>
+              <UserOutlined class="text-text-tertiary" />
+            </template>
+          </a-input>
+        </a-form-item>
+        <a-form-item class="!mb-0">
+          <a-button html-type="submit" class="custom-btn-light-style"> 搜索</a-button>
+        </a-form-item>
+      </a-form>
+    </div>
 
-      <!-- 搜索区域 -->
-      <div class="search-area glass-container rounded-xl p-6 mb-6">
-        <a-form layout="inline" :model="searchParams" @finish="doSearch" class="search-form">
-          <a-form-item label="账号" class="!mb-4">
-            <a-input 
-              v-model:value="searchParams.userAccount" 
-              placeholder="输入账号" 
-              allow-clear
-              class="!rounded-lg !h-10"
-            >
-              <template #prefix>
-                <UserOutlined class="text-text-tertiary" />
-              </template>
-            </a-input>
-          </a-form-item>
-          <a-form-item label="用户名" class="!mb-4">
-            <a-input 
-              v-model:value="searchParams.userName" 
-              placeholder="输入用户名" 
-              allow-clear
-              class="!rounded-lg !h-10"
-            >
-              <template #prefix>
-                <UserOutlined class="text-text-tertiary" />
-              </template>
-            </a-input>
-          </a-form-item>
-          <a-form-item class="!mb-0">
-            <a-button 
-              type="primary" 
-              html-type="submit"
-              class="!rounded-lg !h-10 core-btn-primary"
-            >
-              搜索
-            </a-button>
-          </a-form-item>
-        </a-form>
-      </div>
-
-      <!-- 数据表单 -->
-      <div class="glass-container rounded-xl p-4">
-        <a-table
-          :columns="columns"
-          :data-source="dataList"
-          :pagination="pagination"
-          @change="doTableChange"
-          class="custom-table"
-        >
-          <template #bodyCell="{ column, record }">
-            <template v-if="column.dataIndex === 'userAvatar'">
-              <a-image 
-                :src="record.userAvatar" 
-                :width="60" 
-                class="rounded-lg shadow-sm"
-              />
-            </template>
-            <template v-else-if="column.dataIndex === 'userRole'">
-              <div v-if="record.userRole === 'admin'">
-                <a-tag color="red" class="!rounded-full !px-3 !py-1">管理员</a-tag>
-              </div>
-              <div v-else>
-                <a-tag color="blue" class="!rounded-full !px-3 !py-1">普通用户</a-tag>
-              </div>
-            </template>
-            <template v-else-if="column.dataIndex === 'createTime'">
-              <span class="text-text-secondary">{{ dayjs(record.createTime).format('YYYY-MM-DD HH:mm:ss') }}</span>
-            </template>
-            <template v-else-if="column.key === 'action'">
-              <a-button 
-                danger 
-                @click="doDelete(record.id)"
-                class="!rounded-lg danger-btn"
-              >
-                删除
-              </a-button>
-            </template>
+    <!-- 数据表单 -->
+    <div class="glass-container rounded-xl p-4">
+      <a-table
+        :columns="columns"
+        :data-source="dataList"
+        :pagination="pagination"
+        @change="doTableChange"
+        class="custom-table"
+      >
+        <template #bodyCell="{ column, record }">
+          <template v-if="column.dataIndex === 'userAvatar'">
+            <a-image :src="record.userAvatar" :width="60" class="rounded-lg shadow-sm" />
           </template>
-        </a-table>
-      </div>
+          <template v-else-if="column.dataIndex === 'userRole'">
+            <div v-if="record.userRole === 'admin'">
+              <a-tag color="red" class="!rounded-full !px-3 !py-1">管理员</a-tag>
+            </div>
+            <div v-else>
+              <a-tag color="blue" class="!rounded-full !px-3 !py-1">普通用户</a-tag>
+            </div>
+          </template>
+          <template v-else-if="column.dataIndex === 'createTime'">
+            <span class="text-text-secondary">{{
+              dayjs(record.createTime).format('YYYY-MM-DD HH:mm:ss')
+            }}</span>
+          </template>
+          <template v-else-if="column.key === 'action'">
+            <a-button danger @click="doDelete(record.id)" class="!rounded-lg danger-btn">
+              删除
+            </a-button>
+          </template>
+        </template>
+      </a-table>
     </div>
   </div>
 </template>
@@ -114,6 +92,10 @@ const columns = [
   {
     title: '头像',
     dataIndex: 'userAvatar',
+  },
+  {
+    title: '邮箱',
+    dataIndex: 'email',
   },
   {
     title: '简介',
@@ -203,17 +185,8 @@ const doDelete = async (id: number) => {
 </script>
 
 <style scoped>
-#userManagePage {
-  min-height: 100vh;
-}
-
-.glass-container {
-  backdrop-filter: blur(10px);
-  border: 1px solid var(--glass-border);
-}
-
 .search-area {
-  margin-bottom: 24px;
+  margin: 8px 24px 24px;
 }
 
 .search-form {
@@ -223,111 +196,19 @@ const doDelete = async (id: number) => {
   align-items: flex-end;
 }
 
-.custom-table {
-  border-radius: 12px;
-  overflow: hidden;
-}
-
-/* 自定义表格样式 */
-:deep(.custom-table .ant-table) {
-  border-radius: 12px;
-  overflow: hidden;
-}
-
-:deep(.custom-table .ant-table-thead > tr > th) {
-  background: linear-gradient(135deg, var(--primary-blue) 0%, var(--dark-blue) 100%) !important;
-  color: white !important;
-  font-weight: 600 !important;
-  border-bottom: 1px solid var(--glass-border) !important;
-}
-
-:deep(.custom-table .ant-table-tbody > tr > td) {
-  background: var(--glass-bg-light) !important;
-  border-bottom: 1px solid var(--glass-border) !important;
-}
-
-:deep(.custom-table .ant-table-tbody > tr:hover > td) {
-  background: var(--glass-bg-hover) !important;
-}
-
-:deep(.custom-table .ant-pagination-item) {
-  border-radius: 8px !important;
-  border: 1px solid var(--glass-border) !important;
-  background: var(--glass-bg-light) !important;
-}
-
-:deep(.custom-table .ant-pagination-item-active) {
-  background: linear-gradient(135deg, var(--primary-blue) 0%, var(--dark-blue) 100%) !important;
-  border-color: var(--primary-blue) !important;
-}
-
-:deep(.custom-table .ant-pagination-item a) {
-  color: var(--text-primary) !important;
-}
-
-:deep(.custom-table .ant-pagination-item-active a) {
-  color: white !important;
-}
-
-/* 核心按钮样式 */
-.core-btn-primary {
-  background: var(--core-btn-gradient) !important;
-  border: none !important;
-  box-shadow: var(--core-btn-shadow) !important;
-  color: white !important;
-}
-
-.core-btn-primary:hover {
-  background: var(--core-btn-gradient-hover) !important;
-  transform: translateY(-1px) !important;
-  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4) !important;
-}
-
-/* 危险按钮样式 */
-.danger-btn {
-  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
-  border: none !important;
-  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3) !important;
-  color: white !important;
-}
-
-.danger-btn:hover {
-  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%) !important;
-  transform: translateY(-1px) !important;
-  box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4) !important;
-}
-
-/* 选中效果样式 */
-.selected-effect {
-  background: var(--selected-bg-gradient) !important;
-  color: var(--selected-text-color) !important;
-  border: 1px solid var(--selected-border-color) !important;
-  box-shadow: var(--selected-shadow) !important;
-}
-
 /* 响应式设计 */
 @media (max-width: 768px) {
   #userManagePage {
     padding: 16px;
   }
-  
+
   .glass-container {
     padding: 16px !important;
   }
-  
+
   .search-form {
     flex-direction: column;
     gap: 12px;
-  }
-  
-  :deep(.ant-form-item) {
-    margin-bottom: 0 !important;
-    width: 100%;
-  }
-  
-  :deep(.ant-input),
-  :deep(.ant-btn) {
-    width: 100% !important;
   }
 }
 
@@ -335,22 +216,9 @@ const doDelete = async (id: number) => {
   #userManagePage {
     padding: 12px;
   }
-  
+
   .glass-container {
     padding: 12px !important;
-  }
-  
-  :deep(.custom-table .ant-table) {
-    font-size: 14px;
-  }
-  
-  :deep(.custom-table .ant-table-thead > tr > th) {
-    font-size: 13px;
-    padding: 8px 4px;
-  }
-  
-  :deep(.custom-table .ant-table-tbody > tr > td) {
-    padding: 8px 4px;
   }
 }
 </style>
