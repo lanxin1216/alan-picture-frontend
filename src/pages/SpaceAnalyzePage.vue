@@ -80,7 +80,4 @@ const isAdmin = computed(() => {
 </script>
 
 <style scoped>
-#spaceAnalyzePage {
-  margin-bottom: 16px;
-}
 </style>

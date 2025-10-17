@@ -1,70 +1,68 @@
 <template>
-  <div class="spaceDetailPage space-y-6">
+  <div class="spaceDetailPage">
     <!-- 空间信息头部 -->
-    <div class="glass-container p-6 rounded-xl">
-      <div class="flex justify-between items-center">
-        <div>
-          <h2 class="text-2xl font-bold text-text-primary mb-1">
-            {{ space.spaceName }}（{{ SPACE_TYPE_MAP[space.spaceType] }}）
-          </h2>
-          <p class="text-text-secondary text-sm">空间ID: {{ id }}</p>
-        </div>
-        <a-space size="middle">
-          <a-tooltip
-            :title="`占用空间 ${formatSize(space.totalSize)} / ${formatSize(space.maxSize)}`"
-          >
-            <a-progress
-              type="circle"
-              :percent="((space.totalSize * 100) / space.maxSize).toFixed(1)"
-              :size="48"
-              stroke-color="#1890ff"
-              class="custom-progress"
-            />
-          </a-tooltip>
-          <a-button
-            v-if="canUploadPicture"
-            type="primary"
-            :href="`/add_picture?spaceId=${id}`"
-            target="_blank"
-            class="!rounded-lg core-btn-primary"
-          >
-            + 创建图片
-          </a-button>
-          <a-button 
-            :icon="h(EditOutlined)" 
-            @click="doBatchEdit"
-            class="!rounded-lg glass-container !border !border-glass-border"
-          >
-            批量编辑
-          </a-button>
-          <a-button
-            v-if="canManageSpaceUser && SPACE_TYPE_ENUM.TEAM == space.spaceType"
-            type="primary"
-            ghost
-            :icon="h(TeamOutlined)"
-            :href="`/spaceUserManage/${id}`"
-            target="_blank"
-            class="!rounded-lg selected-bg"
-          >
-            成员管理
-          </a-button>
-          <a-button
-            v-if="canManageSpaceUser"
-            type="primary"
-            ghost
-            :icon="h(BarChartOutlined)"
-            :href="`/space_analyze?spaceId=${id}`"
-            target="_blank"
-            class="!rounded-lg selected-bg"
-          >
-            空间分析
-          </a-button>
-        </a-space>
+    <a-flex justify="space-between" style="padding: 4px 16px">
+      <div>
+        <h2 class="text-2xl font-bold text-text-primary mb-1">
+          {{ space.spaceName }}（{{ SPACE_TYPE_MAP[space.spaceType] }}）
+        </h2>
+        <p class="text-text-secondary text-sm">空间ID: {{ id }}</p>
       </div>
-    </div>
+      <a-space size="middle">
+        <a-tooltip
+          :title="`占用空间 ${formatSize(space.totalSize)} / ${formatSize(space.maxSize)}`"
+        >
+          <a-progress
+            type="circle"
+            :percent="((space.totalSize * 100) / space.maxSize).toFixed(1)"
+            :size="48"
+            stroke-color="#1890ff"
+            class="custom-progress"
+          />
+        </a-tooltip>
+        <a-button
+          v-if="canUploadPicture"
+          type="primary"
+          :href="`/add_picture?spaceId=${id}`"
+          target="_blank"
+          class="!rounded-lg custom-btn-dark-style"
+        >
+          + 创建图片
+        </a-button>
+        <a-button
+          :icon="h(EditOutlined)"
+          @click="doBatchEdit"
+          class="!rounded-lg custom-btn-light-style"
+        >
+          批量编辑
+        </a-button>
+        <a-button
+          v-if="canManageSpaceUser && SPACE_TYPE_ENUM.TEAM == space.spaceType"
+          type="primary"
+          ghost
+          :icon="h(TeamOutlined)"
+          :href="`/spaceUserManage/${id}`"
+          target="_blank"
+          class="!rounded-lg selected-bg"
+        >
+          成员管理
+        </a-button>
+        <a-button
+          v-if="canManageSpaceUser"
+          type="primary"
+          ghost
+          :icon="h(BarChartOutlined)"
+          :href="`/space_analyze?spaceId=${id}`"
+          target="_blank"
+          class="!rounded-lg selected-bg"
+        >
+          空间分析
+        </a-button>
+      </a-space>
+    </a-flex>
 
     <!-- 搜索表单 -->
-    <div class="glass-container p-6 rounded-xl">
+    <div class="p-6 rounded-xl" style="margin: 8px 24px">
       <PictureSearchForm :onSearch="onSearch" />
     </div>
 
@@ -231,77 +229,20 @@ watch(
 </script>
 
 <style scoped>
-.spaceDetailPage {
-  min-height: calc(100vh - 8rem);
-}
-
-/* 自定义进度条样式 */
-:deep(.custom-progress .ant-progress-text) {
-  color: var(--text-primary) !important;
-  font-weight: 600 !important;
-}
-
-/* 自定义分页样式 */
-:deep(.custom-pagination .ant-pagination-item) {
-  border-radius: 8px !important;
-  border: 1px solid var(--glass-border) !important;
-  background: var(--glass-bg-light) !important;
-}
-
-:deep(.custom-pagination .ant-pagination-item-active) {
-  background: var(--selected-bg) !important;
-  border-color: var(--primary-blue) !important;
-}
-
-:deep(.custom-pagination .ant-pagination-item a) {
-  color: var(--text-primary) !important;
-}
-
-:deep(.custom-pagination .ant-pagination-item-active a) {
-  color: white !important;
-}
-
-:deep(.custom-pagination .ant-pagination-prev, .custom-pagination .ant-pagination-next) {
-  border-radius: 8px !important;
-  border: 1px solid var(--glass-border) !important;
-  background: var(--glass-bg-light) !important;
-}
-
 /* 响应式设计 */
 @media (max-width: 768px) {
   .spaceDetailPage {
     padding: 0 8px;
   }
-  
+
   .glass-container {
     padding: 16px !important;
-  }
-  
-  :deep(.flex.justify-between.items-center) {
-    flex-direction: column;
-    gap: 16px;
-    align-items: flex-start;
-  }
-  
-  :deep(a-space) {
-    width: 100%;
-    justify-content: flex-start;
-    flex-wrap: wrap;
   }
 }
 
 @media (max-width: 480px) {
   .glass-container {
     padding: 12px !important;
-  }
-  
-  :deep(a-space) {
-    gap: 8px !important;
-  }
-  
-  :deep(a-button) {
-    font-size: 14px !important;
-    padding: 4px 8px !important;
   }
 }
 </style>
