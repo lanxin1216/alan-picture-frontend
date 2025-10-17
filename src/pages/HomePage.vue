@@ -176,51 +176,6 @@ const getTagCategoryOptions = async () => {
   margin-bottom: 16px;
 }
 
-/* 自定义标签样式 */
-:deep(.ant-checkable-tag) {
-  background: var(--glass-bg-light) !important;
-  border: 1px solid var(--glass-border) !important;
-  border-radius: 8px !important;
-  padding: 4px 12px !important;
-  transition: all 0.3s ease !important;
-}
-
-:deep(.ant-checkable-tag-checked) {
-  color: var(--text-primary) !important;
-  border-color: var(--primary-blue) !important;
-  box-shadow: 0 4px 12px rgba(24, 144, 255, 0.2) !important;
-}
-
-:deep(.ant-checkable-tag:hover) {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(24, 144, 255, 0.2) !important;
-}
-
-/* 自定义分页样式 */
-:deep(.custom-pagination .ant-pagination-item) {
-  border-radius: 8px !important;
-  border: 1px solid var(--glass-border) !important;
-  background: var(--glass-bg-light) !important;
-}
-
-:deep(.custom-pagination .ant-pagination-item-active) {
-  border-color: var(--primary-blue) !important;
-}
-
-:deep(.custom-pagination .ant-pagination-item a) {
-  color: var(--text-primary) !important;
-}
-
-:deep(.custom-pagination .ant-pagination-item-active a) {
-  color: white !important;
-}
-
-:deep(.custom-pagination .ant-pagination-prev, .custom-pagination .ant-pagination-next) {
-  border-radius: 8px !important;
-  border: 1px solid var(--glass-border) !important;
-  background: var(--glass-bg-light) !important;
-}
-
 /* 响应式设计 */
 @media (max-width: 768px) {
   .search-bar {

@@ -295,25 +295,6 @@ watchEffect(() => {
   margin: 0;
 }
 
-/* 自定义标签样式 */
-:deep(.custom-tabs .ant-tabs-tab) {
-  border-radius: 8px 8px 0 0 !important;
-  border: 1px solid var(--glass-border) !important;
-  margin-right: 8px !important;
-}
-
-:deep(.custom-tabs .ant-tabs-tab-active) {
-  color: var(--text-primary) !important;
-}
-
-:deep(.custom-tabs .ant-tabs-nav) {
-  margin-bottom: 16px !important;
-}
-
-:deep(.custom-tabs .ant-tabs-content) {
-  background: transparent !important;
-}
-
 /* 自定义表单样式 */
 :deep(.ant-form-item-label > label) {
   color: var(--text-primary) !important;

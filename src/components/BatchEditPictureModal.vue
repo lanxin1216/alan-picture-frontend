@@ -1,6 +1,7 @@
 <template>
   <a-modal v-model:visible="visible" title="批量编辑图片" :footer="false" @cancel="closeModal">
     <a-typography-paragraph type="secondary">* 只对当前页面查询展示的图片生效</a-typography-paragraph>
+    <a-typography-paragraph type="secondary">* 当前仅支持对通过【筛选】查询的图片批量修改【分类、标签、命名规则】</a-typography-paragraph>
     <!-- 表单项 -->
     <a-form layout="vertical" :model="formData" @finish="handleSubmit">
       <a-form-item label="分类" name="category">
@@ -24,7 +25,7 @@
         <a-input v-model:value="formData.nameRule" placeholder="请输入命名规则，输入 {序号} 可动态生成" />
       </a-form-item>
       <a-form-item>
-        <a-button type="primary" html-type="submit">提交</a-button>
+        <a-button type="primary" html-type="submit" class="custom-btn-dark-style">提交</a-button>
       </a-form-item>
     </a-form>
   </a-modal>
