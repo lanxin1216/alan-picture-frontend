@@ -163,18 +163,6 @@ body {
   box-shadow: var(--glass-shadow);
 }
 
-.ant-pagination-item {
-  border-radius: 8px;
-  border: 1px solid var(--glass-border);
-  background: var(--glass-bg-light);
-}
-
-.ant-pagination-item-active {
-  background: var(--core-btn-gradient);
-  border-color: var(--primary-blue);
-  box-shadow: var(--core-btn-shadow);
-}
-
 .ant-dropdown-menu {
   border-radius: 12px;
   border: 1px solid var(--glass-border);
