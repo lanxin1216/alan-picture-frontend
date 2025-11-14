@@ -8,7 +8,8 @@
         enter-button="搜索"
         size="large"
         class="w-full custom-search-input"
-        @search="doSearch"/>
+        @search="doSearch"
+      />
     </div>
 
     <!-- 分类 + 标签 -->
@@ -25,7 +26,7 @@
             v-for="(tag, index) in tagList"
             :key="tag"
             v-model:checked="selectedTagList[index]"
-            class=" transition-all duration-300 hover:scale-105"
+            class="transition-all duration-300 hover:scale-105"
             @change="doSearch"
           >
             {{ tag }}
@@ -39,18 +40,9 @@
       <PictureListMasonry :dataList="dataList" :loading="loading" />
     </div>
 
-    <!-- 分页 -->
-    <div class="p-4 rounded-xl flex justify-center">
-      <a-pagination
-        v-model:current="searchParams.current"
-        v-model:pageSize="searchParams.pageSize"
-        :total="total"
-        show-size-changer
-        show-quick-jumper
-        @change="onPageChange"
-        class="custom-pagination"
-      />
-    </div>
+    <div ref="loadMoreRef" class="h-12"></div>
+    <div v-if="loading" class="text-center py-6 text-gray-500">加载中...</div>
+    <div v-if="noMore" class="text-center py-6 text-gray-400">没有更多内容了</div>
   </div>
 </template>
 
@@ -61,13 +53,14 @@ import {
   listPictureTagCategoryUsingGet,
   listPictureVoByPageUsingPost,
 } from '@/api/pictureController.ts'
-import PictureList from '@/components/PictureList.vue'
 import PictureListMasonry from '@/components/PictureListMasonry.vue'
 
 // 数据
 const dataList = ref([])
-const total = ref(0)
-const loading = ref(true)
+const loading = ref(false)
+const noMore = ref(false)
+
+const loadMoreRef = ref<HTMLElement | null>(null)
 
 // 分类和标签
 const categoryList = ref<string[]>([])
@@ -78,28 +71,23 @@ const selectedTagList = ref<string[]>([])
 // 搜索条件（使用倒序，根据创建时间）
 const searchParams = reactive<API.PictureQueryRequest>({
   current: 1,
-  pageSize: 15,
+  pageSize: 20,
   sortField: 'createTime',
   sortOrder: 'descend',
 })
-
-// 分页参数（使用计算属性）
-const onPageChange = (page: number, pageSize: number) => {
-  searchParams.current = page
-  searchParams.pageSize = pageSize
-  fetchData()
-}
 
 /**
  * 获取页面数据
  */
 const fetchData = async () => {
+  if (loading.value || noMore.value) return
   loading.value = true
   // 转换搜索参数
   const params = {
     ...searchParams,
     tags: [],
   }
+
   if (selectedCategory.value !== 'all') {
     params.category = selectedCategory.value
   }
@@ -109,19 +97,46 @@ const fetchData = async () => {
       params.tags.push(tagList.value[index])
     }
   })
+
   const res = await listPictureVoByPageUsingPost(params)
-  if (res.data.data) {
-    dataList.value = res.data.data.records ?? []
-    total.value = Number(res.data.data.total) || 0
-  } else {
-    message.error('获取数据失败，' + res.data.message)
-  }
   loading.value = false
+  if (!res.data.data) {
+    message.error('加载失败：' + res.data.message)
+    return
+  }
+  const records = res.data.data.records ?? []
+  // 第一页重置
+  if (searchParams.current === 1) {
+    dataList.value = records
+  } else {
+    dataList.value.push(...records)
+  }
+
+  // 判断是否加载到底
+  if (records.length < searchParams.pageSize) {
+    noMore.value = true
+  }
+}
+
+/** 滚动到底时自动触发加载更多 */
+let observer: IntersectionObserver
+const initObserver = () => {
+  observer = new IntersectionObserver((entries) => {
+    if (entries[0].isIntersecting && !loading.value && !noMore.value) {
+      searchParams.current++
+      fetchData()
+    }
+  })
+
+  if (loadMoreRef.value) {
+    observer.observe(loadMoreRef.value)
+  }
 }
 
 // 页面加载时
 onMounted(() => {
   fetchData()
+  initObserver()
   getTagCategoryOptions()
 })
 
@@ -129,10 +144,16 @@ onMounted(() => {
  * 搜索
  */
 const doSearch = () => {
-  // 重置搜索条件
   searchParams.current = 1
+  noMore.value = false
+  dataList.value = []    // 建议清空，避免闪烁
   fetchData()
+
+  // 关键：重新监听
+  observer.disconnect()
+  initObserver()
 }
+
 
 /**
  * 获取标签和分类选项
@@ -162,15 +183,15 @@ const getTagCategoryOptions = async () => {
 /* 自定义搜索框样式 */
 :deep(.custom-search-input .ant-input-search-button) {
   border: none !important;
-  background: var(--core-btn-light-bg)!important;
-  color: var(--core-btn-light-text)!important;
-  box-shadow: var(--core-btn-light-shadow)!important;
+  background: var(--core-btn-light-bg) !important;
+  color: var(--core-btn-light-text) !important;
+  box-shadow: var(--core-btn-light-shadow) !important;
 }
 
 :deep(.custom-search-input .ant-input-search-button:hover) {
-  background: var(--core-btn-light-hover)!important;
-  color: var(--core-btn-light-text)!important;
-  box-shadow: var(--core-btn-light-shadow)!important;
+  background: var(--core-btn-light-hover) !important;
+  color: var(--core-btn-light-text) !important;
+  box-shadow: var(--core-btn-light-shadow) !important;
 }
 
 .tag-bar {
