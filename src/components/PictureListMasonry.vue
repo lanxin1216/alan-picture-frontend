@@ -39,30 +39,31 @@
               </div>
             </div>
 
-            <!-- 左下角：用户信息 -->
-            <div class="bottom-left-content">
+            <!-- 底部内容：用户信息和操作按钮在同一行 -->
+            <div class="bottom-content">
+              <!-- 左侧：用户信息 -->
               <div class="user-info" @click.stop="visitUserProfile(picture.user)">
                 <a-avatar :src="picture.user?.userAvatar" :size="32" class="user-avatar" />
                 <span class="user-name">{{ picture.user?.userName || '匿名用户' }}</span>
               </div>
-            </div>
 
-            <!-- 右下角：操作按钮 -->
-            <div class="bottom-right-content">
-              <a-tooltip title="分享">
-                <a-button type="text" @click.stop="doShare(picture)" class="action-btn">
-                  <template #icon>
-                    <ShareAltOutlined />
-                  </template>
-                </a-button>
-              </a-tooltip>
-              <a-tooltip title="下载">
-                <a-button type="text" @click.stop="doDownload(picture)" class="action-btn">
-                  <template #icon>
-                    <DownloadOutlined />
-                  </template>
-                </a-button>
-              </a-tooltip>
+              <!-- 右侧：操作按钮 -->
+              <div class="action-buttons">
+                <a-tooltip title="分享">
+                  <a-button type="text" @click.stop="doShare(picture)" class="action-btn">
+                    <template #icon>
+                      <ShareAltOutlined />
+                    </template>
+                  </a-button>
+                </a-tooltip>
+                <a-tooltip title="下载">
+                  <a-button type="text" @click.stop="doDownload(picture)" class="action-btn">
+                    <template #icon>
+                      <DownloadOutlined />
+                    </template>
+                  </a-button>
+                </a-tooltip>
+              </div>
             </div>
           </div>
         </div>
@@ -364,8 +365,12 @@ onUnmounted(() => {
   font-size: 11px;
 }
 
-.bottom-left-content {
-  text-align: left;
+/* 底部内容布局 - 用户信息和操作按钮在同一行 */
+.bottom-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  width: 100%;
 }
 
 .user-info {
@@ -374,6 +379,8 @@ onUnmounted(() => {
   gap: 8px;
   cursor: pointer;
   transition: opacity 0.2s ease;
+  flex-shrink: 0;
+  max-width: 70%;
 }
 
 .user-info:hover {
@@ -382,19 +389,22 @@ onUnmounted(() => {
 
 .user-avatar {
   border: 2px solid rgba(255, 255, 255, 0.8);
+  flex-shrink: 0;
 }
 
 .user-name {
   font-size: 14px;
   font-weight: 500;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.bottom-right-content {
-  text-align: right;
+.action-buttons {
   display: flex;
-  justify-content: flex-end;
   gap: 4px;
+  flex-shrink: 0;
 }
 
 .action-btn {
@@ -408,6 +418,7 @@ onUnmounted(() => {
   align-items: center;
   justify-content: center;
   transition: all 0.2s ease;
+  flex-shrink: 0;
 }
 
 .action-btn:hover {
@@ -436,10 +447,43 @@ onUnmounted(() => {
   }
 }
 
+@media (max-width: 768px) {
+  .bottom-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .user-info {
+    max-width: 100%;
+  }
+
+  .action-buttons {
+    align-self: flex-end;
+  }
+}
+
 @media (max-width: 640px) {
   .masonry-container {
     grid-template-columns: 1fr;
     padding: 0 8px;
+  }
+
+  .hover-overlay {
+    padding: 12px;
+  }
+
+  .picture-name {
+    font-size: 14px;
+  }
+
+  .user-name {
+    font-size: 13px;
+  }
+
+  .action-btn {
+    width: 32px;
+    height: 32px;
   }
 }
 </style>
