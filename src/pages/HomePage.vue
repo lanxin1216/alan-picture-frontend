@@ -36,7 +36,7 @@
 
     <!-- 图片列表 -->
     <div class="p-6 rounded-xl">
-      <PictureList :dataList="dataList" :loading="loading" />
+      <PictureListMasonry :dataList="dataList" :loading="loading" />
     </div>
 
     <!-- 分页 -->
@@ -62,6 +62,7 @@ import {
   listPictureVoByPageUsingPost,
 } from '@/api/pictureController.ts'
 import PictureList from '@/components/PictureList.vue'
+import PictureListMasonry from '@/components/PictureListMasonry.vue'
 
 // 数据
 const dataList = ref([])
