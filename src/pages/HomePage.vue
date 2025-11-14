@@ -37,17 +37,21 @@
 
     <!-- 图片列表 -->
     <div class="p-6 rounded-xl">
-      <PictureListMasonry :dataList="dataList" :loading="loading" />
+      <PictureListMasonry
+        :dataList="dataList"
+        :loading="loading"
+        :key="masonryKey"
+      />
     </div>
 
     <div ref="loadMoreRef" class="h-12"></div>
-    <div v-if="loading" class="text-center py-6 text-gray-500">加载中...</div>
+    <div v-if="loadingMore" class="text-center py-6 text-gray-500">加载中...</div>
     <div v-if="noMore" class="text-center py-6 text-gray-400">没有更多内容了</div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, reactive, ref } from 'vue'
+import { onMounted, reactive, ref, nextTick, onUnmounted } from 'vue'
 import { message } from 'ant-design-vue'
 import {
   listPictureTagCategoryUsingGet,
@@ -56,9 +60,11 @@ import {
 import PictureListMasonry from '@/components/PictureListMasonry.vue'
 
 // 数据
-const dataList = ref([])
+const dataList = ref<API.PictureVO[]>([])
 const loading = ref(false)
+const loadingMore = ref(false)
 const noMore = ref(false)
+const masonryKey = ref(0) // 用于强制重新渲染瀑布流组件
 
 const loadMoreRef = ref<HTMLElement | null>(null)
 
@@ -66,9 +72,9 @@ const loadMoreRef = ref<HTMLElement | null>(null)
 const categoryList = ref<string[]>([])
 const selectedCategory = ref<string>('all')
 const tagList = ref<string[]>([])
-const selectedTagList = ref<string[]>([])
+const selectedTagList = ref<boolean[]>([]) // 改为 boolean 数组
 
-// 搜索条件（使用倒序，根据创建时间）
+// 搜索条件
 const searchParams = reactive<API.PictureQueryRequest>({
   current: 1,
   pageSize: 20,
@@ -79,11 +85,17 @@ const searchParams = reactive<API.PictureQueryRequest>({
 /**
  * 获取页面数据
  */
-const fetchData = async () => {
-  if (loading.value || noMore.value) return
-  loading.value = true
+const fetchData = async (isLoadMore = false) => {
+  if ((loading.value && !isLoadMore) || (loadingMore.value && isLoadMore) || noMore.value) return
+
+  if (isLoadMore) {
+    loadingMore.value = true
+  } else {
+    loading.value = true
+  }
+
   // 转换搜索参数
-  const params = {
+  const params: API.PictureQueryRequest = {
     ...searchParams,
     tags: [],
   }
@@ -91,40 +103,54 @@ const fetchData = async () => {
   if (selectedCategory.value !== 'all') {
     params.category = selectedCategory.value
   }
-  // 标签数据转换（因为组件中tag选中数组类似：[true, false, true]，而接口需要的是：['tag1', 'tag3']）
-  selectedTagList.value.forEach((useTag, index) => {
-    if (useTag) {
-      params.tags.push(tagList.value[index])
+
+  // 转换选中的标签
+  selectedTagList.value.forEach((isChecked, index) => {
+    if (isChecked) {
+      params.tags!.push(tagList.value[index])
     }
   })
 
-  const res = await listPictureVoByPageUsingPost(params)
-  loading.value = false
-  if (!res.data.data) {
-    message.error('加载失败：' + res.data.message)
-    return
-  }
-  const records = res.data.data.records ?? []
-  // 第一页重置
-  if (searchParams.current === 1) {
-    dataList.value = records
-  } else {
-    dataList.value.push(...records)
-  }
+  try {
+    const res = await listPictureVoByPageUsingPost(params)
+    const records = res.data.data?.records ?? []
 
-  // 判断是否加载到底
-  if (records.length < searchParams.pageSize) {
-    noMore.value = true
+    if (isLoadMore) {
+      // 加载更多时，直接追加数据
+      dataList.value.push(...records)
+    } else {
+      // 搜索或首次加载时，重置数据
+      dataList.value = records
+      // 强制重新渲染瀑布流组件
+      masonryKey.value++
+    }
+
+    // 判断是否加载到底
+    if (records.length < searchParams.pageSize!) {
+      noMore.value = true
+    } else {
+      noMore.value = false
+    }
+  } catch (error) {
+    message.error('加载失败')
+    console.error('加载失败:', error)
+  } finally {
+    loading.value = false
+    loadingMore.value = false
   }
 }
 
 /** 滚动到底时自动触发加载更多 */
 let observer: IntersectionObserver
 const initObserver = () => {
+  if (observer) {
+    observer.disconnect()
+  }
+
   observer = new IntersectionObserver((entries) => {
-    if (entries[0].isIntersecting && !loading.value && !noMore.value) {
-      searchParams.current++
-      fetchData()
+    if (entries[0].isIntersecting && !loading.value && !loadingMore.value && !noMore.value) {
+      searchParams.current!++
+      fetchData(true)
     }
   })
 
@@ -133,41 +159,55 @@ const initObserver = () => {
   }
 }
 
-// 页面加载时
-onMounted(() => {
-  fetchData()
-  initObserver()
-  getTagCategoryOptions()
-})
-
 /**
  * 搜索
  */
 const doSearch = () => {
   searchParams.current = 1
   noMore.value = false
-  dataList.value = []    // 建议清空，避免闪烁
-  fetchData()
+  dataList.value = []
+  fetchData(false)
 
-  // 关键：重新监听
-  observer.disconnect()
-  initObserver()
+  nextTick(() => {
+    initObserver()
+  })
 }
-
 
 /**
  * 获取标签和分类选项
  */
 const getTagCategoryOptions = async () => {
-  const res = await listPictureTagCategoryUsingGet()
-  if (res.data.code === 0 && res.data.data) {
-    // 转换成下拉选项组件接受的格式
-    categoryList.value = res.data.data.categoryList ?? []
-    tagList.value = res.data.data.tagList ?? []
-  } else {
-    message.error('加载分类标签失败，' + res.data.message)
+  try {
+    const res = await listPictureTagCategoryUsingGet()
+    if (res.data.code === 0 && res.data.data) {
+      categoryList.value = res.data.data.categoryList ?? []
+      tagList.value = res.data.data.tagList ?? []
+      // 初始化选中状态数组
+      selectedTagList.value = new Array(tagList.value.length).fill(false)
+    } else {
+      message.error('加载分类标签失败，' + res.data.message)
+    }
+  } catch (error) {
+    console.error('加载分类标签失败:', error)
+    message.error('加载分类标签失败')
   }
 }
+
+// 页面加载时
+onMounted(() => {
+  fetchData(false)
+  nextTick(() => {
+    initObserver()
+  })
+  getTagCategoryOptions()
+})
+
+// 组件卸载时清理
+onUnmounted(() => {
+  if (observer) {
+    observer.disconnect()
+  }
+})
 </script>
 
 <style scoped>

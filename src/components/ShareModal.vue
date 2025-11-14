@@ -1,5 +1,5 @@
 <template>
-  <a-modal v-model:visible="visible" title="分享图片" :footer="false" @cancel="closeModal">
+  <a-modal v-model:open="open" title="分享图片" :footer="false" @cancel="closeModal">
     <h4>复制分享链接</h4>
     <a-typography-link copyable>
       {{ link }}
@@ -30,16 +30,16 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 // 是否可见
-const visible = ref(false)
+const open = ref(false)
 
 // 打开弹窗
 const openModal = () => {
-  visible.value = true
+  open.value = true
 }
 
 // 关闭弹窗
 const closeModal = () => {
-  visible.value = false
+  open.value = false
 }
 
 // 暴露函数给父组件

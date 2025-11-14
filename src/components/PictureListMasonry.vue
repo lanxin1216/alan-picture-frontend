@@ -1,6 +1,6 @@
 <template>
   <div class="masonry-layout">
-    <!-- 瀑布流布局 -->
+    <!-- 使用 CSS Grid 实现更稳定的瀑布流 -->
     <div
       class="masonry-container"
       ref="masonryContainer"
@@ -10,15 +10,18 @@
         v-for="(picture, index) in dataList"
         :key="picture.id"
         class="masonry-item"
+        :style="{ gridRowEnd: `span ${getItemSpan(picture)}` }"
         @click="doClickPicture(picture)"
       >
         <!-- 图片容器 -->
         <div class="image-container">
           <img
-            :src="picture.thumbnailUrl || picture.url"
+            :src="placeholderImage"
+            :data-src="picture.thumbnailUrl || picture.url"
             :alt="picture.name"
-            class="image-content"
+            class="image-content lazy-image"
             loading="lazy"
+            ref="imageRefs"
           />
 
           <!-- 悬停遮罩层 -->
@@ -81,7 +84,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, nextTick, computed } from 'vue'
+import { ref, onMounted, onUnmounted, nextTick, computed, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { ShareAltOutlined, DownloadOutlined } from '@ant-design/icons-vue'
 import { message } from 'ant-design-vue'
@@ -108,16 +111,25 @@ const props = withDefaults(defineProps<Props>(), {
 const masonryContainer = ref<HTMLElement>()
 const shareModalRef = ref()
 const shareLink = ref<string>()
+const imageRefs = ref<HTMLImageElement[]>([])
+const placeholderImage = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjVmNWY1Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtc2l6ZT0iMTQiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIwLjM1ZW0iIGZpbGw9IiM5OTkiPua1geWwj+WbvueahOa1i+ivlTwvdGV4dD48L3N2Zz4='
 
-// 计算列宽（根据容器宽度动态计算）
+// 计算列宽
 const columnWidth = computed(() => {
   if (!masonryContainer.value) return 280
   const containerWidth = masonryContainer.value.offsetWidth
-  if (containerWidth >= 1920) return 320 // 大屏幕
-  if (containerWidth >= 1200) return 280 // 桌面端
-  if (containerWidth >= 768) return 240 // 平板
-  return 180 // 手机
+  if (containerWidth >= 1920) return 320
+  if (containerWidth >= 1200) return 280
+  if (containerWidth >= 768) return 240
+  return 180
 })
+
+// 模拟图片高度（根据宽高比计算 span 值）
+const getItemSpan = (picture: API.PictureVO) => {
+  // 这里简化处理，随机生成 1-3 的 span 值来模拟不同高度
+  const aspectRatio = picture.picWidth && picture.picHeight ? picture.picHeight / picture.picWidth : Math.random() * 0.8 + 0.6
+  return Math.floor(aspectRatio * 8) + 6 // 基础高度 + 随机变化
+}
 
 // 路由
 const router = useRouter()
@@ -155,7 +167,6 @@ const doDownload = async (picture: API.PictureVO) => {
       return
     }
 
-    // 创建下载链接
     const response = await fetch(imageUrl)
     const blob = await response.blob()
     const url = window.URL.createObjectURL(blob)
@@ -175,21 +186,62 @@ const doDownload = async (picture: API.PictureVO) => {
   }
 }
 
+// 懒加载实现
+let imageObserver: IntersectionObserver
+
+const initLazyLoad = () => {
+  imageObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const img = entry.target as HTMLImageElement
+        const src = img.getAttribute('data-src')
+        if (src && img.src !== src) {
+          img.src = src
+          img.classList.remove('lazy-image')
+        }
+        imageObserver.unobserve(img)
+      }
+    })
+  }, {
+    rootMargin: '50px 0px', // 提前50px开始加载
+    threshold: 0.1
+  })
+
+  // 观察所有图片
+  nextTick(() => {
+    imageRefs.value.forEach(img => {
+      if (img.classList.contains('lazy-image')) {
+        imageObserver.observe(img)
+      }
+    })
+  })
+}
+
+// 监听数据变化，初始化新图片的懒加载
+watch(() => props.dataList, () => {
+  nextTick(() => {
+    initLazyLoad()
+  })
+}, { deep: true })
+
 // 响应式布局调整
 const handleResize = () => {
-  // 触发重新渲染
-  nextTick(() => {
-    // 这里可以添加 masonry 布局的逻辑
-  })
+  // 触发重新计算布局
 }
 
 // 生命周期
 onMounted(() => {
   window.addEventListener('resize', handleResize)
+  nextTick(() => {
+    initLazyLoad()
+  })
 })
 
 onUnmounted(() => {
   window.removeEventListener('resize', handleResize)
+  if (imageObserver) {
+    imageObserver.disconnect()
+  }
 })
 </script>
 
@@ -199,20 +251,20 @@ onUnmounted(() => {
   position: relative;
 }
 
-/*Masonry 核心：使用 column-count 代替 grid ★ */
+/* 使用 CSS Grid 实现更稳定的瀑布流 */
 .masonry-container {
-  column-count: 4; /* 默认四列 */
-  column-gap: 16px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-auto-rows: 10px; /* 基础行高 */
+  gap: 16px;
   padding: 0 16px;
 }
 
 .masonry-item {
-  break-inside: avoid;
-  margin-bottom: 16px;
-  cursor: pointer;
   border-radius: 12px;
   overflow: hidden;
   transition: all 0.3s ease;
+  cursor: pointer;
 }
 
 .masonry-item:hover {
@@ -220,20 +272,31 @@ onUnmounted(() => {
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
 }
 
-/* 下面内容全部保持不动： */
 .image-container {
   position: relative;
   border-radius: 12px;
   overflow: hidden;
   background: #f5f5f5;
+  height: 100%;
 }
 
 .image-content {
   width: 100%;
-  height: auto;
+  height: 100%;
   object-fit: cover;
   display: block;
   transition: transform 0.3s ease;
+}
+
+.lazy-image {
+  opacity: 0.7;
+  filter: blur(5px);
+  transition: opacity 0.3s ease, filter 0.3s ease;
+}
+
+.image-content:not(.lazy-image) {
+  opacity: 1;
+  filter: blur(0);
 }
 
 .masonry-item:hover .image-content {
@@ -352,7 +415,6 @@ onUnmounted(() => {
   transform: scale(1.1);
 }
 
-/* loading / empty 保留 */
 .loading-container,
 .empty-container {
   display: flex;
@@ -361,22 +423,23 @@ onUnmounted(() => {
   padding: 60px 0;
 }
 
-/* ★ 响应式 column-count ★ */
+/* 响应式设计 */
 @media (max-width: 1600px) {
   .masonry-container {
-    column-count: 3;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   }
 }
 
 @media (max-width: 1024px) {
   .masonry-container {
-    column-count: 2;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   }
 }
 
 @media (max-width: 640px) {
   .masonry-container {
-    column-count: 1;
+    grid-template-columns: 1fr;
+    padding: 0 8px;
   }
 }
 </style>
